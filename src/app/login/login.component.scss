@@ -1,0 +1,136 @@
+:root {
+  --green: #00c853;
+  --white: #ffffff;
+  --gray: #f2f2f2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  height: 100%;
+  background: var(--gray);
+}
+
+/* Container de toda la pantalla */
+.screen-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Panel izquierdo con imagen */
+.left-panel {
+  flex: 1;
+  background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80');
+  background-size: cover;
+  background-position: center;
+  display: none;
+}
+
+/* Panel derecho (formulario) */
+.right-panel {
+  flex: 1;
+  background-color: var(--green);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  border-radius: 0;
+}
+
+.brand {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.brand img {
+  width: 50px;
+  margin-bottom: 10px;
+}
+
+.brand h1 {
+  font-size: 28px;
+  margin: 0;
+}
+
+.brand p {
+  font-size: 14px;
+  margin: 4px 0 0;
+}
+
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab-buttons button {
+  background: var(--white);
+  border: none;
+  color: var(--green);
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.tab-buttons button.active {
+  background: #006400;
+  color: var(--white);
+}
+
+.form-login {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-login label {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.form-login input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 15px;
+}
+
+.btn-submit {
+  background: var(--white);
+  color: var(--green);
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-submit:hover {
+  background: #e0e0e0;
+}
+
+/* Responsive para móviles */
+@media (min-width: 768px) {
+  .left-panel {
+    display: block;
+  }
+
+  .right-panel {
+    flex: 1;
+    border-radius: 20px 0 0 20px;
+    max-width: 400px;
+    margin-left: auto;
+  }
+}

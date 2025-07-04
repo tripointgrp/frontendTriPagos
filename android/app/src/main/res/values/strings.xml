@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">TriPagos</string>
+    <string name="title_activity_main">TriPagos</string>
+    <string name="package_name">com.tripoint.tripagos</string>
+    <string name="custom_url_scheme">com.tripoint.tripagos</string>
+</resources>

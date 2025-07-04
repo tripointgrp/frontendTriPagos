@@ -1,0 +1,33 @@
+<div class="screen-container">
+  <div class="left-panel"></div>
+
+  <div class="right-panel">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="Logo" />
+      <h1>TriPagos</h1>
+      <p *ngIf="selectedTab === 'vecino'">AMI APARTAMENTOS</p>
+    </div>
+
+    <div class="tab-buttons">
+      <button [class.active]="selectedTab === 'admin'" (click)="selectedTab = 'admin'">Administrador</button>
+      <button [class.active]="selectedTab === 'vecino'" (click)="selectedTab = 'vecino'">Vecino</button>
+    </div>
+
+    <form (ngSubmit)="login()" class="form-login">
+      <ng-container *ngIf="selectedTab === 'admin'">
+        <label>Nombre de usuario</label>
+        <input type="text" [(ngModel)]="admin.usuario" name="usuario" required />
+
+        <label>Contraseña</label>
+        <input type="password" [(ngModel)]="admin.password" name="password" required />
+      </ng-container>
+
+      <ng-container *ngIf="selectedTab === 'vecino'">
+        <label>Número de residencia</label>
+        <input type="text" [(ngModel)]="vecino.codigo" name="codigo" required />
+      </ng-container>
+
+      <button type="submit" class="btn-submit">Iniciar sesión</button>
+    </form>
+  </div>
+</div>
