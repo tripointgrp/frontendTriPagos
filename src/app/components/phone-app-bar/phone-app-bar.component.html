@@ -1,0 +1,68 @@
+<div class="dashboard-header">
+    <div
+      class="header-top"
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        width: 100%;
+      "
+    >
+      <span
+        (click)="redirecTo('/home')"
+        [style.background-color]="currentRoute === '/home' ? 'var(--green-marked)' : ''"
+        [style.padding]="currentRoute === '/home' ? '8px' : ''"
+        [style.border-radius]="currentRoute === '/home' ? '10px' : ''"
+        style="display: flex; align-items: center; cursor: pointer;"
+        class="material-symbols-outlined"
+        >home</span>
+      >
+      <span
+        class="condo-name"
+        style="display: flex; align-items: center; margin-top: 20px"
+        >AMI APARTAMENTOS</span
+      >
+      <span
+        class="material-symbols-outlined"
+        style="display: flex; align-items: center"
+        >person</span
+      >
+    </div>
+
+    <div class="header-actions">
+      <div
+        (click)="redirecTo('/reserva')"
+        class="action"
+        [style.background-color]="currentRoute === '/reserva' ? 'var(--green-marked)' : ''"
+        [style.padding]="currentRoute === '/reserva' ? '8px' : ''"
+        [style.border-radius]="currentRoute === '/reserva' ? '10px' : ''"
+        style="cursor: pointer;"
+      >
+        <span class="material-symbols-outlined">event</span>
+        <span>RESERVAR</span>
+      </div>
+      <div
+        (click)="redirecTo('/pagos')"
+        class="action"
+        [style.background-color]="currentRoute === '/pagos' ? 'var(--green-marked)' : ''"
+        [style.padding]="currentRoute === '/pagos' ? '8px' : ''"
+        [style.border-radius]="currentRoute === '/pagos' ? '10px' : ''"
+        style="cursor: pointer;"
+      >
+        <span class="material-symbols-outlined">payments</span>
+        <span>PAGOS</span>
+      </div>
+      <div
+        (click)="redirecTo('/consulta')"
+        class="action"
+        [style.background-color]="currentRoute === '/consulta' ? 'var(--green-marked)' : ''"
+        [style.padding]="currentRoute === '/consulta' ? '8px' : ''"
+        [style.border-radius]="currentRoute === '/consulta' ? '10px' : ''"
+        style="cursor: pointer;"
+      >
+        <span class="material-symbols-outlined">search</span>
+        <span>CONSULTA</span>
+      </div>
+    </div>
+  </div>

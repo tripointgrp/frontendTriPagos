@@ -4,12 +4,15 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { PagosComponent } from './pagos/pagos.component';
+import { ReservaComponent } from './reserva/reserva.component';
+import { ConsultaComponent } from './consulta/consulta.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '*', pathMatch: 'full' },
+  { path: '', component: LandingPageComponent, pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
-  { path: '*', component: LandingPageComponent },
   { path: 'pagos', component: PagosComponent },
-  { path: '**', redirectTo: 'login' } // <-- Ruta comodín
+  { path: 'reserva', component: ReservaComponent },
+  { path: 'consulta', component: ConsultaComponent},
+  { path: '**', redirectTo: '' } // Ruta comodín redirige a la landing
 ];
