@@ -1,17 +1,12 @@
-:root {
-  --green: #00c853;
-  --white: #ffffff;
-  --gray: #f2f2f2;
-}
-
 * {
   box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   height: 100%;
   background: var(--gray);
 }
@@ -20,15 +15,19 @@ body, html {
 .screen-container {
   display: flex;
   height: 100vh;
+  width: 100vw;
+  background-image: url('/assets/Backgrounds/sala.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Panel izquierdo con imagen */
 .left-panel {
   flex: 1;
-  background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80');
-  background-size: cover;
-  background-position: center;
-  display: none;
+  // background-color: var(--white);
+  // background-size: cover;
+  // background-position: center;
 }
 
 /* Panel derecho (formulario) */
@@ -36,33 +35,24 @@ body, html {
   flex: 1;
   background-color: var(--green);
   color: var(--white);
+  margin: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 40px 20px;
-  border-radius: 0;
-}
-
-.brand {
-  text-align: center;
-  margin-bottom: 20px;
+  border-radius: 20px;
 }
 
 .brand img {
-  width: 50px;
-  margin-bottom: 10px;
+  width: 260px; // Imagen más grande
+  max-width: 90%;
+  margin-bottom: 70px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.brand h1 {
-  font-size: 28px;
-  margin: 0;
-}
-
-.brand p {
-  font-size: 14px;
-  margin: 4px 0 0;
-}
 
 .tab-buttons {
   display: flex;
@@ -76,14 +66,20 @@ body, html {
   border: none;
   color: var(--green);
   padding: 10px 20px;
-  border-radius: 20px;
+  border-radius: 5px;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.3s ease;
+  flex: 1 1 0;
+  min-width: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .tab-buttons button.active {
-  background: #006400;
+  background: var(--green-dark);
   color: var(--white);
 }
 
@@ -97,40 +93,141 @@ body, html {
 .form-login label {
   margin-bottom: 5px;
   font-size: 14px;
+  color: var(--white); // mismo verde del diseño principal
+  font-weight: 600;
 }
 
 .form-login input {
-  padding: 10px;
-  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
   border: none;
+  background-color: #f1f1f1;
   margin-bottom: 15px;
+  outline: none;
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+  color: #333;
 }
 
 .btn-submit {
   background: var(--white);
   color: var(--green);
-  padding: 10px;
-  border-radius: 8px;
+  padding: 0.75rem;
   border: none;
-  font-weight: bold;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: 0.3s;
 }
 
 .btn-submit:hover {
   background: #e0e0e0;
 }
 
+.login-wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-section {
+  background-color: var(--green);
+  height: 50vh;
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // centra verticalmente
+  align-items: center;     // centra horizontalmente
+  text-align: center;
+
+  .logo {
+    width: 260px; // aumenta el tamaño
+    height: auto;
+    margin-bottom: 1rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+.bottom-section {
+  position: relative;
+  top: -2rem; // Eleva la sección para que se sobreponga al top-section
+  z-index: 2;
+  height: 50%;
+  width: 100%;
+  background-color: white;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  label {
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  input {
+    padding: 0.75rem 1rem;
+    border: none;
+    background-color: var(--white);
+    border-radius: 999px;
+    outline: none;
+    font-size: 1rem;
+  }
+
+  button {
+    background-color: var(--green);
+    color: var(--white);
+    padding: 0.75rem;
+    border: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background-color: var(--green-dark);
+  }
+}
+
 /* Responsive para móviles */
 @media (min-width: 768px) {
+  .login-wrapper {
+    display: none !important;
+  }
+
   .left-panel {
     display: block;
   }
 
   .right-panel {
     flex: 1;
-    border-radius: 20px 0 0 20px;
+    border-radius: 20px;
     max-width: 400px;
     margin-left: auto;
+  }
+}
+
+/* Quitar margen en pantallas pequeñas */
+@media (max-width: 767px) {
+  .screen-container {
+    display: none !important;
   }
 }

@@ -1,16 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-pagos',
   standalone: true,
   imports: [RouterModule, CommonModule],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  templateUrl: './pagos.component.html',
+  styleUrl: './pagos.component.scss',
 })
-export class HomeComponent {
+export class PagosComponent {
   // Variables e inputs
   rutaActual: string = '';
 
@@ -19,10 +18,5 @@ export class HomeComponent {
   ngOnInit() {
     console.log('Ruta actual:', this.router.url);
     this.rutaActual = this.router.url;
-  }
-
-  redirecTo(ruta: string) {
-    console.log('Redirigiendo a:', ruta);
-    this.router.navigate([ruta]);
   }
 }

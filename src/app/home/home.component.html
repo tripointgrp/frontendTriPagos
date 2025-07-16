@@ -1,1 +1,48 @@
-<p>home works!</p>
+<div class="dashboard-wrapper">
+  <div class="dashboard-header">
+    <div class="header-top" style="display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%;">
+      <span style="background-color: var(--green-marked); padding: 8px; border-radius: 10px; display: flex; align-items: center;" class="material-symbols-outlined">home</span>
+      <span class="condo-name" style="display: flex; align-items: center; margin-top: 20px;">AMI APARTAMENTOS</span>
+      <span class="material-symbols-outlined" style="display: flex; align-items: center;">person</span>
+    </div>
+
+    <div class="header-actions">
+      <div class="action">
+        <span class="material-symbols-outlined">event</span>
+        <span>RESERVAR</span>
+      </div>
+      <div style="cursor: pointer; " (click)="redirecTo('/pagos')" class="action">
+        <span class="material-symbols-outlined">payments</span>
+        <span>PAGOS</span>
+      </div>
+      <div class="action">
+        <span class="material-symbols-outlined">search</span>
+        <span>CONSULTA</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-card">
+    <div class="header">
+      <h2>Hola, Carlos</h2>
+      <span class="residence">A132</span>
+    </div>
+
+    <div class="info-box">
+      <p class="label">Deuda actual</p>
+      <p class="value">Q550.00</p>
+    </div>
+
+    <div class="info-box">
+      <p class="label">Último pago</p>
+      <p class="value">01 Mar, 2025</p>
+    </div>
+
+    <div class="info-box">
+      <p class="label">Saldo al día</p>
+      <p class="value">31 Mar, 2025</p>
+    </div>
+
+    <button class="btn-upload">SUBIR PAGO</button>
+  </div>
+</div>

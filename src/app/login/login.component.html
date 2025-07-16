@@ -1,25 +1,70 @@
 <div class="screen-container">
-  <div class="left-panel"></div>
+  <div
+    class="left-panel"
+    style="
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+    "
+  >
+    <div
+      style="
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      "
+    ></div>
+    <div style="padding-bottom: 24px">
+      <span>By</span>
+      <img
+        src="assets/Imagotipo/Logo-24.png"
+        alt=""
+        style="height: 24px; width: auto"
+      />
+    </div>
+  </div>
 
   <div class="right-panel">
     <div class="brand">
-      <img src="assets/logo.svg" alt="Logo" />
-      <h1>TriPagos</h1>
-      <p *ngIf="selectedTab === 'vecino'">AMI APARTAMENTOS</p>
+      <img src="assets/logos/tripagos.png" alt="Logo" />
     </div>
 
     <div class="tab-buttons">
-      <button [class.active]="selectedTab === 'admin'" (click)="selectedTab = 'admin'">Administrador</button>
-      <button [class.active]="selectedTab === 'vecino'" (click)="selectedTab = 'vecino'">Vecino</button>
+      <button
+        [class.active]="selectedTab === 'admin'"
+        (click)="selectedTab = 'admin'"
+      >
+        Administrador
+      </button>
+      <button
+        [class.active]="selectedTab === 'vecino'"
+        (click)="selectedTab = 'vecino'"
+      >
+        Vecino
+      </button>
     </div>
 
     <form (ngSubmit)="login()" class="form-login">
       <ng-container *ngIf="selectedTab === 'admin'">
         <label>Nombre de usuario</label>
-        <input type="text" [(ngModel)]="admin.usuario" name="usuario" required />
+        <input
+          type="text"
+          [(ngModel)]="admin.usuario"
+          name="usuario"
+          required
+        />
 
         <label>Contraseña</label>
-        <input type="password" [(ngModel)]="admin.password" name="password" required />
+        <input
+          type="password"
+          [(ngModel)]="admin.password"
+          name="password"
+          required
+        />
       </ng-container>
 
       <ng-container *ngIf="selectedTab === 'vecino'">
@@ -28,6 +73,28 @@
       </ng-container>
 
       <button type="submit" class="btn-submit">Iniciar sesión</button>
+    </form>
+  </div>
+</div>
+
+<div class="login-wrapper">
+  <div class="top-section">
+    <img src="assets/logos/tripagos.png" alt="Logo" class="logo" />
+    <span class="subtitle">AMI Apartamentos</span>
+  </div>
+
+  <div class="bottom-section">
+    <form (ngSubmit)="login()" class="login-form">
+      <label for="codigo">Número de residente</label>
+      <input
+        type="text"
+        [(ngModel)]="vecino.codigo"
+        name="codigo"
+        id="codigo"
+        placeholder="A132"
+        required
+      />
+      <button type="submit">Iniciar sesión</button>
     </form>
   </div>
 </div>
