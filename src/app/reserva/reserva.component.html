@@ -1,5 +1,95 @@
 <div class="dashboard-wrapper">
   <app-phone-app-bar></app-phone-app-bar>
 
-  <div class="dashboard-card"></div>
+  <!-- Tabs con diseño moderno -->
+  <div class="tabs">
+    <div
+      class="tab"
+      [class.active]="activeTab === 'reservar'"
+      (click)="activeTab = 'reservar'"
+    >
+      Reservar
+    </div>
+    <div
+      class="tab"
+      [class.active]="activeTab === 'misReservas'"
+      (click)="activeTab = 'misReservas'"
+    >
+      Mis reservas
+    </div>
+  </div>
+
+  <div class="dashboard-card">
+    <!-- Formulario de reserva -->
+    <div *ngIf="activeTab === 'reservar'" class="mt-4">
+      <div class="mb-3">
+        <label class="fw-bold">Amenidad</label>
+        <select class="form-select select-small" [(ngModel)]="amenidadSeleccionada">
+          <option disabled selected value="">Seleccionar</option>
+          <option *ngFor="let amenidad of amenidades" [value]="amenidad">
+            {{ amenidad }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="fw-bold">Fecha a reservar</label>
+        <div class="input-group">
+          <input
+            class="form-control"
+            placeholder="Seleccionar fecha"
+            name="fecha"
+            ngbDatepicker
+            [(ngModel)]="fechaSeleccionada"
+            [markDisabled]="esFechaOcupada"
+            #d="ngbDatepicker"
+            readonly
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="d.toggle()"
+          >
+            <i class="bi bi-calendar"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="fw-bold">Hora</label>
+        <select class="form-select select-small" [(ngModel)]="horaSeleccionada">
+          <option disabled selected value="">-- Selecciona una hora --</option>
+          <option
+            *ngFor="let hora of horasDisponibles"
+            [value]="hora"
+            [disabled]="horasOcupadas.includes(hora)"
+          >
+            {{ hora }}
+          </option>
+        </select>
+      </div>
+
+      <button class="btn-upload" (click)="reservarAmenidad()">RESERVAR</button>
+    </div>
+
+    <!-- Mis reservas -->
+    <div *ngIf="activeTab === 'misReservas'" class="mt-4 px-3">
+      <p *ngIf="reservas.length === 0" class="text-muted">No tienes reservas aún.</p>
+
+      <div *ngFor="let r of reservas" class="card mb-3 shadow-sm border-0 rounded-4">
+        <div class="card-body d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="fw-bold text-primary mb-1">{{ r.amenidad }}</h6>
+            <p class="mb-0 text-muted">
+              <i class="bi bi-calendar-event"></i> {{ r.fecha }}
+            </p>
+            <p class="mb-0 text-muted">
+              <i class="bi bi-clock"></i> {{ r.hora }}
+            </p>
+          </div>
+          <span class="badge bg-success rounded-pill align-self-center">Reservado</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

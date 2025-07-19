@@ -1,5 +1,73 @@
 <div class="dashboard-wrapper">
   <app-phone-app-bar></app-phone-app-bar>
 
-  <div class="dashboard-card"></div>
+
+<!-- Tabs con diseño moderno -->
+<div class="tabs">
+  <div
+    class="tab"
+    [class.active]="activeTab === 'realizados'"
+    (click)="activeTab = 'realizados'"
+  >
+    Realizados
+  </div>
+  <div
+    class="tab"
+    [class.active]="activeTab === 'pendientes'"
+    (click)="activeTab = 'pendientes'"
+  >
+    Pendientes
+  </div>
+  <div
+    class="tab"
+    [class.active]="activeTab === 'pagar'"
+    (click)="activeTab = 'pagar'"
+  >
+    Pagar
+  </div>
 </div>
+
+<div class="dashboard-card">
+  <!-- Realizados -->
+  <div *ngIf="activeTab === 'realizados'" class="mt-4">
+    <p class="fw-bold mb-2">Pagos realizados</p>
+    <div class="info-box" *ngFor="let pago of pagosRealizados">
+      <div class="d-flex justify-content-between align-items-center">
+        <p class="label m-0">{{ pago.fecha }}</p>
+        <p class="value text-success m-0">Q{{ pago.monto.toFixed(2) }}</p>
+      </div>
+      <p class="m-0">{{ pago.descripcion }}</p>
+      <small class="text-muted">No. {{ pago.numero }}</small>
+    </div>
+  </div>
+
+  <!-- Pendientes -->
+  <div *ngIf="activeTab === 'pendientes'" class="mt-4">
+    <p class="fw-bold mb-2">Pagos pendientes</p>
+    <div class="info-box" *ngFor="let pago of pagosPendientes">
+      <div class="d-flex justify-content-between align-items-center">
+        <p class="label m-0">{{ pago.fecha }}</p>
+        <p class="value text-danger m-0">Q{{ pago.monto.toFixed(2) }}</p>
+      </div>
+      <p class="m-0">{{ pago.descripcion }}</p>
+    </div>
+  </div>
+
+  <!-- Pagar -->
+  <div *ngIf="activeTab === 'pagar'" class="mt-4">
+    <p class="fw-bold mb-2">Pagar</p>
+    <p class="text-muted">Aquí va el formulario o funcionalidad para realizar un pago.</p>
+  </div>
+ <!-- Botón solo visible si NO estamos en el tab 'pagar' -->
+<button 
+  *ngIf="activeTab !== 'pagar'" 
+  class="btn-upload mt-4" 
+  (click)="subirPago()"
+>
+  SUBIR PAGO
+</button>
+
+</div>
+
+  
+  </div>

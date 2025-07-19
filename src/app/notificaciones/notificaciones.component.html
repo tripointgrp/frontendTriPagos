@@ -1,0 +1,39 @@
+<div class="dashboard-wrapper">
+  <app-phone-app-bar></app-phone-app-bar>
+
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div 
+      class="tab" 
+      [class.active]="activeTab === 'notificaciones'" 
+      (click)="activeTab = 'notificaciones'"
+    >
+      Notificaciones
+    </div>
+    <div 
+      class="tab" 
+      [class.active]="activeTab === 'notificar'" 
+      (click)="activeTab = 'notificar'"
+    >
+      Notificar
+    </div>
+  </div>
+
+  <!-- Lista de notificaciones -->
+  <div *ngIf="activeTab === 'notificaciones'" class="notificaciones-list">
+    <div class="notificacion-box" *ngFor="let n of notificaciones">
+      <div class="notificacion-header">
+        <strong>{{ n.fecha }}</strong>
+        <span class="emisor">{{ n.emisor }}</span>
+      </div>
+      <p class="mensaje">{{ n.mensaje }}</p>
+    </div>
+  </div>
+
+  <!-- Contenido alterno para la pestaña Notificar -->
+  <div *ngIf="activeTab === 'notificar'" class="notificar-box">
+    <p class="text-muted">Funcionalidad para notificar próximamente.</p>
+  </div>
+
+</div>

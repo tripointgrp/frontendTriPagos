@@ -6,18 +6,49 @@ import { PhoneAppBarComponent } from '../components/phone-app-bar/phone-app-bar.
 @Component({
   selector: 'app-pagos',
   standalone: true,
-  imports: [RouterModule, CommonModule,PhoneAppBarComponent],
+  imports: [RouterModule, CommonModule, PhoneAppBarComponent],
   templateUrl: './pagos.component.html',
   styleUrl: './pagos.component.scss',
 })
 export class PagosComponent {
-  // Variables e inputs
   rutaActual: string = '';
 
+  // 👉 Control de pestañas
+  activeTab: 'realizados' | 'pendientes' | 'pagar' = 'realizados';
+;
+
+  // 👉 Datos simulados de pagos realizados
+  pagosRealizados = [
+    {
+      fecha: '15 Mar, 2025',
+      descripcion: 'Cuota de mantenimiento',
+      numero: '23450984',
+      monto: 550.0,
+    },
+    {
+      fecha: '15 Feb, 2025',
+      descripcion: 'Cuota de mantenimiento',
+      numero: '23450984',
+      monto: 550.0,
+    },
+  ];
+
+  // 👉 Datos simulados de pagos pendientes
+  pagosPendientes = [
+    {
+      fecha: '15 Abr, 2025',
+      descripcion: 'Cuota de mantenimiento',
+      monto: 550.0,
+    },
+  ];
+
   constructor(private router: Router) {}
+subirPago() {
+  console.log('Subir pago clicado');
+  // Aquí luego puedes abrir un modal, redirigir a otra pantalla, o subir archivo
+}
 
   ngOnInit() {
-    console.log('Ruta actual:', this.router.url);
     this.rutaActual = this.router.url;
   }
 }

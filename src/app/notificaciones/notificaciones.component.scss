@@ -169,6 +169,13 @@
   }
 }
 
+
+.notificaciones-wrapper {
+  padding: 1rem;
+  background: #f8f8f8;
+  min-height: 100vh;
+}
+
 .tabs {
   display: flex;
   border-bottom: 2px solid #e0e0e0;
@@ -186,5 +193,32 @@
       color: #00c853;
       border-color: #00c853;
     }
+  }
+}
+
+.notificaciones-list {
+  margin-top: 1rem;
+}
+
+.notificacion-box {
+  background: #eee;
+  border-radius: 0.8rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+
+  .notificacion-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+
+    .emisor {
+      font-weight: 600;
+    }
+  }
+
+  .mensaje {
+    color: #888;
+    font-size: 0.87rem;
+    margin-top: 0.5rem;
   }
 }

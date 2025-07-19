@@ -15,9 +15,8 @@
         [style.padding]="currentRoute === '/home' ? '8px' : ''"
         [style.border-radius]="currentRoute === '/home' ? '10px' : ''"
         style="display: flex; align-items: center; cursor: pointer;"
-        class="material-symbols-outlined"
+        class="material-symbols-outlined " 
         >home</span>
-      >
       <span
         class="condo-name"
         style="display: flex; align-items: center; margin-top: 20px"
@@ -54,15 +53,15 @@
         <span>PAGOS</span>
       </div>
       <div
-        (click)="redirecTo('/consulta')"
+        (click)="redirecTo('/notificaciones')"
         class="action"
-        [style.background-color]="currentRoute === '/consulta' ? 'var(--green-marked)' : ''"
-        [style.padding]="currentRoute === '/consulta' ? '8px' : ''"
-        [style.border-radius]="currentRoute === '/consulta' ? '10px' : ''"
+        [style.background-color]="currentRoute === '/notificaciones' ? 'var(--green-marked)' : ''"
+        [style.padding]="currentRoute === '/notificaciones' ? '8px' : ''"
+        [style.border-radius]="currentRoute === '/notificaciones' ? '10px' : ''"
         style="cursor: pointer;"
       >
-        <span class="material-symbols-outlined">search</span>
-        <span>CONSULTA</span>
+        <span class="material-symbols-outlined">notifications_active</span>
+        <span>NOTIFICACIONES</span>
       </div>
     </div>
   </div>
