@@ -56,9 +56,23 @@
       </div>
 
       <div class="mb-4">
-        <label class="fw-bold">Hora</label>
-        <select class="form-select select-small" [(ngModel)]="horaSeleccionada">
-          <option disabled selected value="">-- Selecciona una hora --</option>
+        <label class="fw-bold">Hora Entrada</label>
+        <select class="form-select select-small" [(ngModel)]="horaEntrada">
+          <option disabled selected value="">Entrada</option>
+          <option
+            *ngFor="let hora of horasDisponibles"
+            [value]="hora"
+            [disabled]="horasOcupadas.includes(hora)"
+          >
+            {{ hora }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="fw-bold">Hora Salida</label>
+        <select class="form-select select-small" [(ngModel)]="horaSalida">
+          <option disabled selected value="">Salida</option>
           <option
             *ngFor="let hora of horasDisponibles"
             [value]="hora"
@@ -76,18 +90,14 @@
     <div *ngIf="activeTab === 'misReservas'" class="mt-4 px-3">
       <p *ngIf="reservas.length === 0" class="text-muted">No tienes reservas aún.</p>
 
-      <div *ngFor="let r of reservas" class="card mb-3 shadow-sm border-0 rounded-4">
-        <div class="card-body d-flex justify-content-between align-items-start">
-          <div>
-            <h6 class="fw-bold text-primary mb-1">{{ r.amenidad }}</h6>
-            <p class="mb-0 text-muted">
-              <i class="bi bi-calendar-event"></i> {{ r.fecha }}
-            </p>
-            <p class="mb-0 text-muted">
-              <i class="bi bi-clock"></i> {{ r.hora }}
-            </p>
+      <div *ngFor="let r of reservas" class="card reserva-item mb-3 border-0 shadow-sm rounded-4 w-100">
+        <div class="card-body p-3">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="fw-bold">{{ r.fecha }}</span>
+            <span class="text-success fw-semibold">Reservado</span>
           </div>
-          <span class="badge bg-success rounded-pill align-self-center">Reservado</span>
+          <div class="text-dark small">Amenidad: {{ r.amenidad }}</div>
+          <div class="text-dark small">Hora: {{ r.entrada }} a {{ r.salida }}</div>
         </div>
       </div>
     </div>

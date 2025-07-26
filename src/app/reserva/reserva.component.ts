@@ -22,30 +22,33 @@ export class ReservaComponent {
   amenidades = ['Gimnasio', 'Piscina', 'Salón de eventos'];
   amenidadSeleccionada = '';
   fechaSeleccionada: NgbDateStruct | null = null;
-  horaSeleccionada = '';
+  horaEntrada = '';
+  horaSalida = '';
 
-  reservas: { amenidad: string; fecha: string; hora: string }[] = [];
+  reservas: { amenidad: string; fecha: string; entrada: string; salida: string }[] = [];
 
-  // Fechas ocupadas en el calendario
   fechasOcupadas: NgbDateStruct[] = [
     { year: 2025, month: 7, day: 20 },
     { year: 2025, month: 7, day: 25 },
     { year: 2025, month: 7, day: 28 },
   ];
 
-  // Horarios ocupados por fecha
   horariosReservados: Record<string, string[]> = {
     '2025-07-20': ['10:00', '14:00'],
     '2025-07-25': ['08:00', '09:30', '15:00']
   };
 
-  // Horas disponibles cada 30 minutos
   horasDisponibles = [
-    '08:00-09:00', '08:30', '09:00', '09:30',
-    '10:00', '10:30', '11:00', '11:30',
-    '12:00', '12:30', '13:00', '13:30',
-    '14:00', '14:30', '15:00', '15:30',
-    '16:00', '16:30', '17:00', '17:30',
+    '08:00', '08:30',
+    '09:00', '09:30',
+    '10:00', '10:30',
+    '11:00', '11:30',
+    '12:00', '12:30',
+    '13:00', '13:30',
+    '14:00', '14:30',
+    '15:00', '15:30',
+    '16:00', '16:30',
+    '17:00', '17:30',
     '18:00'
   ];
 
@@ -66,13 +69,28 @@ export class ReservaComponent {
   };
 
   reservarAmenidad() {
-    if (!this.amenidadSeleccionada || !this.fechaSeleccionada || !this.horaSeleccionada) {
+    if (!this.amenidadSeleccionada || !this.fechaSeleccionada || !this.horaEntrada || !this.horaSalida) {
       alert('Completa todos los campos antes de reservar.');
       return;
     }
 
-    if (this.horasOcupadas.includes(this.horaSeleccionada)) {
-      alert('La hora seleccionada ya está ocupada.');
+    if (this.horaEntrada >= this.horaSalida) {
+      alert('La hora de entrada debe ser menor que la de salida.');
+      return;
+    }
+
+    const fechaKey = `${this.fechaSeleccionada.year}-${this.fechaSeleccionada.month
+      .toString().padStart(2, '0')}-${this.fechaSeleccionada.day
+      .toString().padStart(2, '0')}`;
+
+    // Validar que ninguna de las horas esté ocupada
+    const horasEnRango = this.horasDisponibles.filter(
+      h => h >= this.horaEntrada && h < this.horaSalida
+    );
+
+    const ocupadas = horasEnRango.filter(h => this.horasOcupadas.includes(h));
+    if (ocupadas.length > 0) {
+      alert(`Las siguientes horas están ocupadas: ${ocupadas.join(', ')}`);
       return;
     }
 
@@ -83,25 +101,23 @@ export class ReservaComponent {
     this.reservas.push({
       amenidad: this.amenidadSeleccionada,
       fecha: fechaString,
-      hora: this.horaSeleccionada,
+      entrada: this.horaEntrada,
+      salida: this.horaSalida,
     });
 
-    // 👉 Ocupar la hora para esa fecha
-    const fechaKey = `${this.fechaSeleccionada.year}-${this.fechaSeleccionada.month
-      .toString().padStart(2, '0')}-${this.fechaSeleccionada.day
-      .toString().padStart(2, '0')}`;
-
+    // Ocupar horas en el rango
     if (!this.horariosReservados[fechaKey]) {
       this.horariosReservados[fechaKey] = [];
     }
-    this.horariosReservados[fechaKey].push(this.horaSeleccionada);
+    this.horariosReservados[fechaKey].push(...horasEnRango);
 
     alert('Reserva realizada exitosamente ✅');
 
-    // Resetear formulario
+    // Resetear
     this.amenidadSeleccionada = '';
     this.fechaSeleccionada = null;
-    this.horaSeleccionada = '';
+    this.horaEntrada = '';
+    this.horaSalida = '';
     this.activeTab = 'misReservas';
   }
 }

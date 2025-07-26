@@ -1,73 +1,131 @@
 <div class="dashboard-wrapper">
   <app-phone-app-bar></app-phone-app-bar>
 
-
-<!-- Tabs con diseño moderno -->
-<div class="tabs">
-  <div
-    class="tab"
-    [class.active]="activeTab === 'realizados'"
-    (click)="activeTab = 'realizados'"
-  >
-    Realizados
-  </div>
-  <div
-    class="tab"
-    [class.active]="activeTab === 'pendientes'"
-    (click)="activeTab = 'pendientes'"
-  >
-    Pendientes
-  </div>
-  <div
-    class="tab"
-    [class.active]="activeTab === 'pagar'"
-    (click)="activeTab = 'pagar'"
-  >
-    Pagar
-  </div>
-</div>
-
-<div class="dashboard-card">
-  <!-- Realizados -->
-  <div *ngIf="activeTab === 'realizados'" class="mt-4">
-    <p class="fw-bold mb-2">Pagos realizados</p>
-    <div class="info-box" *ngFor="let pago of pagosRealizados">
-      <div class="d-flex justify-content-between align-items-center">
-        <p class="label m-0">{{ pago.fecha }}</p>
-        <p class="value text-success m-0">Q{{ pago.monto.toFixed(2) }}</p>
-      </div>
-      <p class="m-0">{{ pago.descripcion }}</p>
-      <small class="text-muted">No. {{ pago.numero }}</small>
+  <!-- Tabs con diseño moderno -->
+  <div class="tabs">
+    <div
+      class="tab"
+      [class.active]="activeTab === 'pagar'"
+      (click)="activeTab = 'pagar'"
+    >
+      Pagar
+    </div>
+    <div
+      class="tab"
+      [class.active]="activeTab === 'realizados'"
+      (click)="activeTab = 'realizados'"
+    >
+      Realizados
+    </div>
+    <div
+      class="tab"
+      [class.active]="activeTab === 'pendientes'"
+      (click)="activeTab = 'pendientes'"
+    >
+      Pendientes
     </div>
   </div>
 
-  <!-- Pendientes -->
-  <div *ngIf="activeTab === 'pendientes'" class="mt-4">
-    <p class="fw-bold mb-2">Pagos pendientes</p>
-    <div class="info-box" *ngFor="let pago of pagosPendientes">
-      <div class="d-flex justify-content-between align-items-center">
-        <p class="label m-0">{{ pago.fecha }}</p>
-        <p class="value text-danger m-0">Q{{ pago.monto.toFixed(2) }}</p>
+  <div class="dashboard-card">
+    <!-- Realizados -->
+    <div *ngIf="activeTab === 'realizados'" class="mt-4">
+      <p class="fw-bold mb-2">Pagos realizados</p>
+      <div class="info-box" *ngFor="let pago of pagosRealizados">
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="label m-0">{{ pago.fecha }}</p>
+          <p class="value text-success m-0">Q{{ pago.monto.toFixed(2) }}</p>
+        </div>
+        <p class="m-0">{{ pago.descripcion }}</p>
+        <small class="text-muted">No. {{ pago.numero }}</small>
       </div>
-      <p class="m-0">{{ pago.descripcion }}</p>
     </div>
-  </div>
 
-  <!-- Pagar -->
-  <div *ngIf="activeTab === 'pagar'" class="mt-4">
-    <p class="fw-bold mb-2">Pagar</p>
-    <p class="text-muted">Aquí va el formulario o funcionalidad para realizar un pago.</p>
-  </div>
- <!-- Botón solo visible si NO estamos en el tab 'pagar' -->
-<button 
-  *ngIf="activeTab !== 'pagar'" 
-  class="btn-upload mt-4" 
-  (click)="subirPago()"
->
-  SUBIR PAGO
-</button>
+    <!-- Pendientes -->
+    <div *ngIf="activeTab === 'pendientes'" class="mt-4">
+      <p class="fw-bold mb-2">Pagos pendientes</p>
+      <div class="info-box" *ngFor="let pago of pagosPendientes">
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="label m-0">{{ pago.fecha }}</p>
+          <p class="value text-danger m-0">Q{{ pago.monto.toFixed(2) }}</p>
+        </div>
+        <p class="m-0">{{ pago.descripcion }}</p>
+      </div>
+    </div>
 
+    <!-- Formulario de pago -->
+    <div *ngIf="activeTab === 'pagar'" class="mt-4">
+      <p class="fw-bold mb-3">Formulario de pago</p>
+
+      <div class="form-group">
+  <label for="mes">Mes</label>
+  <select id="mes" [(ngModel)]="mesRegistrado">
+    <option value="" disabled selected>Seleccione un mes</option>
+    <option *ngFor="let mes of mesesDelAnio" [value]="mes">{{ mes }}</option>
+  </select>
 </div>
 
-  
+      <div class="form-group mb-3">
+        <label for="numeroBoleta">Número de boleta</label>
+        <input
+          id="numeroBoleta"
+          class="form-control"
+          placeholder="Ej. 123456789"
+          [(ngModel)]="numeroBoleta"
+          name="numeroBoleta"
+          required
+        />
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="fechaBoleta">Fecha de la boleta</label>
+        <input
+          id="fechaBoleta"
+          class="form-control"
+          type="date"
+          [(ngModel)]="fechaBoleta"
+          name="fechaBoleta"
+          required
+        />
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="monto">Monto (Q)</label>
+        <input
+          id="monto"
+          class="form-control"
+          type="number"
+          [(ngModel)]="monto"
+          name="monto"
+          required
+        />
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="imagen">Imagen de boleta</label>
+        <input
+          id="imagen"
+          class="form-control"
+          type="file"
+          accept="image/*"
+          (change)="adjuntarImagen($event)"
+        />
+      </div>
+
+      <button
+        class="btn-upload mt-4"
+        (click)="subirPago()"
+      >
+        REGISTRAR
+      </button>
+    </div>
+
+    <!-- Botón flotante cuando no estamos en el tab "pagar" -->
+    <button
+      *ngIf="activeTab !== 'pagar'"
+      class="btn-upload mt-4"
+      (click)="activeTab = 'pagar'"
+    >
+      SUBIR PAGO
+    </button>
   </div>
+</div>

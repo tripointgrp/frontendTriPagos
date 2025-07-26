@@ -1,39 +1,61 @@
 <div class="dashboard-wrapper">
   <app-phone-app-bar></app-phone-app-bar>
 
-
-  <!-- Tabs -->
+  <!-- Tabs de navegación -->
   <div class="tabs">
-    <div 
-      class="tab" 
-      [class.active]="activeTab === 'notificaciones'" 
+    <div
+      class="tab"
+      [class.active]="activeTab === 'notificaciones'"
       (click)="activeTab = 'notificaciones'"
     >
       Notificaciones
     </div>
-    <div 
-      class="tab" 
-      [class.active]="activeTab === 'notificar'" 
+    <div
+      class="tab"
+      [class.active]="activeTab === 'notificar'"
       (click)="activeTab = 'notificar'"
     >
       Notificar
     </div>
   </div>
 
-  <!-- Lista de notificaciones -->
-  <div *ngIf="activeTab === 'notificaciones'" class="notificaciones-list">
-    <div class="notificacion-box" *ngFor="let n of notificaciones">
-      <div class="notificacion-header">
-        <strong>{{ n.fecha }}</strong>
-        <span class="emisor">{{ n.emisor }}</span>
+  <div class="dashboard-card">
+    <!-- Vista: Notificaciones recibidas -->
+    <div *ngIf="activeTab === 'notificaciones'" class="mt-4 px-3">
+      <p *ngIf="notificaciones.length === 0" class="text-muted">No tienes notificaciones.</p>
+
+      <div *ngFor="let n of notificaciones" class="info-box">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <p class="label m-0">{{ n.fecha }}</p>
+          <small class="text-muted">{{ n.emisor }}</small>
+        </div>
+        <p class="m-0">{{ n.mensaje }}</p>
       </div>
-      <p class="mensaje">{{ n.mensaje }}</p>
+    </div>
+
+    <!-- Vista: Notificar -->
+    <div *ngIf="activeTab === 'notificar'" class="mt-4 px-3">
+      <div class="mb-3">
+        <label class="fw-bold">Aviso:</label>
+        <textarea
+          class="form-control rounded-4"
+          [(ngModel)]="nuevoMensaje"
+          rows="4"
+          placeholder="Escribe tu aviso aquí..."
+        ></textarea>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label text-muted">Adjuntar imagen</label>
+        <input
+          type="file"
+          accept="image/*"
+          class="form-control form-control-sm rounded-4"
+          (change)="adjuntarImagen($event)"
+        />
+      </div>
+
+      <button class="btn-upload" (click)="enviarNotificacion()">NOTIFICAR</button>
     </div>
   </div>
-
-  <!-- Contenido alterno para la pestaña Notificar -->
-  <div *ngIf="activeTab === 'notificar'" class="notificar-box">
-    <p class="text-muted">Funcionalidad para notificar próximamente.</p>
-  </div>
-
 </div>
