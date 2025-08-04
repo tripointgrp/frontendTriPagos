@@ -1,0 +1,107 @@
+<div class="usuarios-container">
+
+  <div class="usuarios-header">
+    <h2>Gestión de Usuarios</h2>
+    <button class="btn-agregar" (click)="'resetForm()'">+ Nuevo Usuario</button>
+  </div>
+
+  <!-- Formulario -->
+  <form (ngSubmit)="guardarUsuario()" class="form-usuarios">
+    <div class="form-group">
+      <label>Código Departamento</label>
+      <input type="text" [(ngModel)]="nuevoUsuario.codigo_departamento" name="codigo_departamento" required>
+    </div>
+
+    <div class="form-group">
+      <label>Nombre Completo</label>
+      <input type="text" [(ngModel)]="nuevoUsuario.nombre" name="nombre" required>
+    </div>
+
+    <div class="form-group">
+      <label>Correo Electrónico</label>
+      <input type="email" [(ngModel)]="nuevoUsuario.email" name="email">
+    </div>
+
+    <div class="form-group">
+      <label>NIT</label>
+      <input type="text" [(ngModel)]="nuevoUsuario.nit" name="nit">
+    </div>
+
+    <div class="form-group">
+      <label>ID Condominio</label>
+      <input type="text" [(ngModel)]="nuevoUsuario.id_condominio" name="id_condominio" required>
+    </div>
+
+    <div class="form-group">
+      <label>Nombre Condominio</label>
+      <input type="text" [(ngModel)]="nuevoUsuario.nombre_condominio" name="nombre_condominio" required>
+    </div>
+
+    <div class="form-group">
+      <label>Unidad / Apartamento</label>
+      <input type="text" [(ngModel)]="nuevoUsuario.unidad" name="unidad">
+    </div>
+
+    <div class="form-group">
+      <label>Rol</label>
+      <select [(ngModel)]="nuevoUsuario.rol" name="rol" required>
+        <option value="residente">Residente</option>
+        <option value="admin">Administrador</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Estado</label>
+      <select [(ngModel)]="nuevoUsuario.estado" name="estado">
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-submit">
+        {{ editando ? 'Actualizar' : 'Agregar' }} Usuario
+      </button>
+    </div>
+  </form>
+
+  <!-- Tabla -->
+  <div class="tabla-wrapper">
+    <table class="tabla-usuarios">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>NIT</th>
+          <th>Condominio</th>
+          <th>Unidad</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th class="acciones-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuarios">
+          <td>{{ usuario.codigo_departamento }}</td>
+          <td>{{ usuario.nombre }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.nit }}</td>
+          <td>{{ usuario.nombre_condominio }}</td>
+          <td>{{ usuario.unidad }}</td>
+          <td>{{ usuario.rol }}</td>
+          <td>
+            <span class="estado" [class.activo]="usuario.estado==='activo'" [class.inactivo]="usuario.estado==='inactivo'">
+              {{ usuario.estado }}
+            </span>
+          </td>
+          <td class="acciones">
+            <button (click)="editarUsuario(usuario)" class="btn-accion editar">Editar</button>
+            <button (click)="eliminarUsuario(usuario.id)" class="btn-accion eliminar">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

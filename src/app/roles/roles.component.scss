@@ -1,0 +1,153 @@
+.roles-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.roles-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h2 {
+    color: var(--green);
+    margin: 0;
+  }
+}
+
+.btn-agregar {
+  background: var(--green);
+  color: var(--white);
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+  &:hover {
+    background: var(--green-dark);
+  }
+}
+
+.form-roles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 5px;
+    }
+
+    input, textarea {
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background: #f9f9f9;
+      outline: none;
+      font-size: 0.9rem;
+      &:focus {
+        border-color: var(--green);
+        background: white;
+      }
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+  }
+}
+
+.permisos {
+  grid-column: 1 / -1;
+  .checkbox-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  }
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  text-align: right;
+}
+
+.btn-submit {
+  background: var(--green);
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover {
+    background: var(--green-dark);
+  }
+}
+
+.tabla-wrapper {
+  overflow-x: auto;
+}
+
+.tabla-roles {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    background: var(--green);
+    color: white;
+    padding: 10px;
+    text-align: left;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+}
+
+.acciones-col {
+  width: 160px;
+}
+
+.acciones {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-accion {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  &.editar {
+    background: var(--green);
+    color: white;
+    &:hover {
+      background: var(--green-dark);
+    }
+  }
+  &.eliminar {
+    background: #e74c3c;
+    color: white;
+    &:hover {
+      background: #c0392b;
+    }
+  }
+}
