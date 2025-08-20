@@ -1,0 +1,118 @@
+/* Paleta TriPagos */
+$tp-green: #0BBF38;
+$tp-text-dark: #232323;
+$tp-muted: #6b7280;
+$tp-bg-soft: #f6f7f9;
+$tp-border: rgba(0,0,0,.08);
+
+/* Topbar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px 12px;
+  color: $tp-text-dark;
+  font-weight: 700;
+
+  &__left { font-size: 16px; }
+  &__right { font-size: 28px; }
+  &__divider {
+    border: none;
+    height: 1px;
+    background: $tp-border;
+    margin: 0;
+  }
+}
+
+/* Contenido */
+.page {
+  padding: 28px 24px 40px;
+  background: #fff;
+  min-height: calc(100vh - 72px);
+
+  &__title {
+    font-size: 36px;
+    font-weight: 800;
+    margin: 0 0 20px;
+    color: $tp-text-dark;
+  }
+}
+
+/* KPIs */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 28px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpi {
+  background: #f3f4f6;
+  border-radius: 14px;
+  padding: 22px 26px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+
+  &__label {
+    color: $tp-green;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  &__value {
+    color: $tp-green;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: .2px;
+  }
+}
+
+/* Sección */
+.section__title {
+  font-size: 34px;
+  font-weight: 800;
+  margin: 24px 0 12px;
+  color: $tp-text-dark;
+}
+
+/* Tabla */
+.table-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 0 $tp-border, 0 1px 2px rgba(0,0,0,.03);
+  overflow: hidden; /* bordes redondeados */
+}
+
+.tp-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  thead th {
+    text-align: left;
+    padding: 14px 18px;
+    font-weight: 700;
+    color: $tp-muted;
+    background: $tp-bg-soft;
+  }
+
+  tbody td {
+    padding: 16px 18px;
+    border-top: 1px solid $tp-border;
+    font-weight: 600;
+    color: #3c3c3c;
+  }
+
+  /* Redondeado en contenedor */
+  thead th:first-child { border-top-left-radius: 14px; }
+  thead th:last-child  { border-top-right-radius: 14px; }
+}
+
+/* Ajustes visuales */
+:host {
+  display: block;
+  background: #fff;
+}

@@ -1,0 +1,105 @@
+/* ====== Paleta compartida ====== */
+$tp-green: #0BBF38;
+$tp-text-dark: #232323;
+$tp-muted: #6b7280;
+$tp-bg-soft: #f6f7f9;
+$tp-border: rgba(0,0,0,.08);
+
+/* ====== Topbar ====== */
+.topbar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 24px 12px; color:$tp-text-dark; font-weight:700;
+  &__left{font-size:16px;} &__right{font-size:28px;}
+  &__divider{border:none;height:1px;background:$tp-border;margin:0;}
+}
+
+/* ====== Página ====== */
+.page{
+  padding:28px 24px 40px; background:#fff; min-height:calc(100vh - 72px);
+  &__title{font-size:36px; font-weight:800; margin:0 0 18px; color:$tp-text-dark;}
+}
+
+/* ====== Botonera ====== */
+.actions{display:flex; flex-wrap:wrap; gap:16px; margin-bottom:20px;}
+.tp-btn{
+  appearance:none; border:0; border-radius:999px; padding:10px 18px;
+  font-weight:800; cursor:pointer; box-shadow:0 2px 0 rgba(0,0,0,.04);
+  &--green{ background:$tp-green; color:#fff;
+    &:hover{ filter:brightness(0.96); } &:active{ transform:translateY(1px); }
+  }
+}
+
+/* ====== Tabla ====== */
+.table-card{
+  background:#fff; border-radius:14px;
+  box-shadow:0 1px 0 $tp-border, 0 1px 2px rgba(0,0,0,.03);
+  overflow:hidden;
+}
+.tp-table{
+  width:100%; border-collapse:separate; border-spacing:0;
+
+  thead th{
+    text-align:left; padding:14px 18px; font-weight:700;
+    color:$tp-muted; background:$tp-bg-soft;
+  }
+  tbody td{
+    padding:16px 18px; border-top:1px solid $tp-border;
+    font-weight:600; color:#3c3c3c;
+  }
+  thead th:first-child{border-top-left-radius:14px;}
+  thead th:last-child{border-top-right-radius:14px;}
+}
+
+/* Badges de estado */
+.badge{
+  display:inline-block; padding:4px 10px; border-radius:999px;
+  font-size:12px; font-weight:800; line-height:1;
+  &--ok{ background:rgba(11,191,56,.12); color:$tp-green; }
+  &--off{ background:rgba(0,0,0,.07); color:#444; }
+  &--warn{ background:rgba(255,200,0,.18); color:#9a6a00; }
+}
+
+/* Host */
+:host{ display:block; background:#fff; }
+
+/* Botones mini y acciones */
+.row-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+.mini-btn{
+  background:#eceff1; color:#222; border:0; border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer;
+  &:hover{ filter:brightness(0.98); } &:active{ transform:translateY(1px); }
+  &--danger{ background:#e34b47; color:#fff; }
+}
+
+/* ===== Modal base ===== */
+.modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.28); backdrop-filter: blur(1px); }
+.modal{
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:min(720px,94vw); background:#fff; border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,.25);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.modal__head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 18px; background:#f6f7f9; border-bottom:1px solid rgba(0,0,0,.08);
+  h3{ margin:0; font-weight:800; color:#2b2b2b; }
+}
+.modal__body{ padding:16px 18px; display:flex; flex-direction:column; gap:12px; }
+.modal__foot{ padding:12px 18px; display:flex; gap:10px; justify-content:flex-end; border-top:1px solid rgba(0,0,0,.08); }
+.icon-btn{ background:transparent; border:0; font-size:18px; cursor:pointer; color:#444; padding:6px 8px; border-radius:10px; &:hover{ background:rgba(0,0,0,.06); } }
+
+.field{
+  display:flex; flex-direction:column; gap:6px;
+  label{ font-weight:700; color:#2b2b2b; }
+  input, select{
+    border:1px solid rgba(0,0,0,.08); border-radius:12px; padding:10px 12px; font-weight:600;
+    &:focus{ outline:none; border-color:#c7c7c7; box-shadow:0 0 0 3px rgba(11,191,56,.08); }
+  }
+}
+
+/* Grid */
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; @media (max-width:640px){ grid-template-columns:1fr; } }
+.req{ color:#E34B47; font-weight:900; }
+
+/* Error de validación */
+.field__error{
+  margin-top:6px; font-weight:700; color:#E34B47;
+}

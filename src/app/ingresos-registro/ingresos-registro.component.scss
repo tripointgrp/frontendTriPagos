@@ -1,0 +1,63 @@
+/* ====== Paleta compartida (igual que el dashboard) ====== */
+$tp-green: #0BBF38;
+$tp-text-dark: #232323;
+$tp-muted: #6b7280;
+$tp-bg-soft: #f6f7f9;
+$tp-border: rgba(0,0,0,.08);
+
+/* ====== Topbar (igual) ====== */
+.topbar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 18px 24px 12px; color:$tp-text-dark; font-weight:700;
+  &__left { font-size:16px; }  &__right { font-size:28px; }
+  &__divider { border:none; height:1px; background:$tp-border; margin:0; }
+}
+
+/* ====== Página ====== */
+.page {
+  padding: 28px 24px 40px; background:#fff; min-height:calc(100vh - 72px);
+  &__title { font-size:36px; font-weight:800; margin:0 0 18px; color:$tp-text-dark; }
+}
+
+/* ====== Botonera ====== */
+.actions {
+  display:flex; flex-wrap:wrap; gap:16px; margin-bottom:20px;
+}
+
+.tp-btn {
+  appearance:none; border:0; border-radius:999px;
+  padding:10px 18px; font-weight:800; cursor:pointer;
+  box-shadow:0 2px 0 rgba(0,0,0,.04);
+  &--green {
+    background:$tp-green; color:#fff;
+    &:hover { filter:brightness(0.96); }
+    &:active { transform:translateY(1px); }
+  }
+}
+
+/* ====== Tabla (compartida con dashboard) ====== */
+.table-card {
+  background:#fff; border-radius:14px;
+  box-shadow:0 1px 0 $tp-border, 0 1px 2px rgba(0,0,0,.03);
+  overflow:hidden;
+}
+
+.tp-table {
+  width:100%; border-collapse:separate; border-spacing:0;
+
+  thead th {
+    text-align:left; padding:14px 18px; font-weight:700;
+    color:$tp-muted; background:$tp-bg-soft;
+  }
+
+  tbody td {
+    padding:16px 18px; border-top:1px solid $tp-border;
+    font-weight:600; color:#3c3c3c;
+  }
+
+  thead th:first-child { border-top-left-radius:14px; }
+  thead th:last-child  { border-top-right-radius:14px; }
+}
+
+/* Host */
+:host { display:block; background:#fff; }

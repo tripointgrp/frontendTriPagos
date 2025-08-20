@@ -1,1 +1,33 @@
-<p>web-sidebar works!</p>
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<aside class="tp-sidebar">
+  <!-- Logo -->
+  <div class="tp-brand">
+    <span class="material-icons tp-brand__icon">payments</span>
+    <span class="tp-brand__text">{{ appName }}</span>
+
+    <button class="tp-hamburger d-lg-none" (click)="toggle.emit()" aria-label="Toggle sidebar">
+      <span class="material-icons">menu</span>
+    </button>
+  </div>
+
+  <!-- Navegación -->
+  <nav class="tp-nav">
+    <a
+      *ngFor="let item of items"
+      class="tp-nav__link"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <span class="material-icons tp-nav__icon">{{ item.icon }}</span>
+      <span class="tp-nav__label">{{ item.label }}</span>
+    </a>
+  </nav>
+
+  <!-- Footer -->
+  <div class="tp-footer">
+    <small>TriPagos</small>
+  </div>
+</aside>

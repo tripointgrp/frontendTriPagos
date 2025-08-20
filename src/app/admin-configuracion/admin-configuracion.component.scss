@@ -1,0 +1,92 @@
+/* Paleta / reusables */
+$tp-green: #0BBF38;
+$tp-text: #232323;
+$tp-muted: #6b7280;
+$tp-bg-soft: #f6f7f9;
+$tp-border: rgba(0,0,0,.08);
+
+/* Topbar / Page */
+.topbar{ display:flex; justify-content:space-between; align-items:center; padding:18px 24px 12px; font-weight:700;
+  &__left{font-size:16px;} &__right{font-size:28px;}
+}
+.topbar__divider{border:none;height:1px;background:$tp-border;margin:0;}
+.page{ padding:28px 24px 40px; background:#fff; min-height:calc(100vh - 72px);
+  &__title{font-size:36px;font-weight:800;margin:0 0 18px;color:$tp-text;}
+}
+
+/* Tabs */
+.tabs{ display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.tab{
+  background:#fff; border:1px solid $tp-border; border-radius:999px; padding:8px 14px; font-weight:800; cursor:pointer;
+  &.active{ background:$tp-green; color:#fff; border-color:$tp-green; }
+}
+
+/* Cards */
+.cards{ display:grid; gap:16px; }
+.card{
+  background:#fff; border-radius:14px; box-shadow:0 1px 0 $tp-border, 0 1px 2px rgba(0,0,0,.03);
+  padding:14px 16px;
+  h3{ margin:0 0 10px; }
+}
+.card-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+
+/* Grid helpers */
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+@media (max-width:1100px){ .grid-4{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:800px){ .grid-3{ grid-template-columns:1fr 1fr;} }
+@media (max-width:640px){ .grid-2,.grid-3,.grid-4{ grid-template-columns:1fr;} }
+
+/* Fields */
+.field{ display:flex; flex-direction:column; gap:6px;
+  label{ font-weight:700; color:#2b2b2b; }
+  input, select, textarea{
+    border:1px solid $tp-border; border-radius:12px; padding:10px 12px; font-weight:600; background:#fff;
+    &:focus{ outline:none; border-color:#c7c7c7; box-shadow:0 0 0 3px rgba(11,191,56,.08); }
+  }
+}
+.toggle-row{ display:flex; align-items:end; }
+.toggles{ display:flex; gap:14px; flex-wrap:wrap; }
+.toggle{ display:flex; align-items:center; gap:8px; font-weight:700; }
+
+/* Buttons */
+.actions{ display:flex; gap:10px; margin:10px 0; }
+.tp-btn{ appearance:none; border:0; border-radius:999px; padding:10px 18px; font-weight:800; cursor:pointer; box-shadow:0 2px 0 rgba(0,0,0,.04); background:#eceff1;
+  &--green{ background:$tp-green; color:#fff; }
+}
+.row-actions{ display:flex; gap:8px; }
+.mini-btn{ background:#eceff1; color:#222; border:0; border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer;
+  &--danger{ background:#e34b47; color:#fff; }
+}
+
+/* Table */
+.table-card{ background:#fff; border-radius:14px; box-shadow:0 1px 0 $tp-border, 0 1px 2px rgba(0,0,0,.03); overflow:hidden; }
+.tp-table{ width:100%; border-collapse:separate; border-spacing:0;
+  thead th{ text-align:left; padding:14px 18px; font-weight:700; color:$tp-muted; background:$tp-bg-soft; }
+  tbody td{ padding:16px 18px; border-top:1px solid $tp-border; font-weight:600; color:#3c3c3c; }
+}
+
+/* Badges */
+.badge{
+  display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:800; line-height:1;
+  &--ok{   background:rgba(11,191,56,.12); color:$tp-green; }
+  &--off{  background:rgba(0,0,0,.07); color:#444; }
+}
+
+/* Footer actions */
+.footer-actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:18px; }
+
+/* Modal */
+.modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.28); backdrop-filter: blur(1px); z-index:40; }
+.modal{
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:min(760px,94vw); background:#fff; border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,.25);
+  display:flex; flex-direction:column; overflow:hidden; z-index:50;
+}
+.modal__head{ display:flex; justify-content:space-between; align-items:center; padding:14px 18px; background:$tp-bg-soft; border-bottom:1px solid $tp-border;
+  h3{ margin:0; font-weight:800; }
+}
+.modal__body{ padding:16px 18px; display:flex; flex-direction:column; gap:12px; }
+.modal__foot{ padding:12px 18px; display:flex; gap:10px; justify-content:flex-end; border-top:1px solid $tp-border; }
+.icon-btn{ background:transparent; border:0; cursor:pointer; font-size:18px; color:#444; padding:6px 8px; border-radius:10px; &:hover{ background:rgba(0,0,0,.06); } }

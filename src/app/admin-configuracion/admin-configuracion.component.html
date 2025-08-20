@@ -1,0 +1,251 @@
+<header class="topbar">
+  <div class="topbar__left">Administrador</div>
+  <div class="topbar__right">Hola, {{ usuario }}</div>
+</header>
+<hr class="topbar__divider" />
+
+<section class="page">
+  <h1 class="page__title">Configuración</h1>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab" [class.active]="tab==='general'"        (click)="tab='general'">General</button>
+    <button class="tab" [class.active]="tab==='pagos'"          (click)="tab='pagos'">Pagos</button>
+    <button class="tab" [class.active]="tab==='notificaciones'" (click)="tab='notificaciones'">Notificaciones</button>
+    <button class="tab" [class.active]="tab==='reservaciones'"  (click)="tab='reservaciones'">Reservaciones</button>
+    <button class="tab" [class.active]="tab==='integraciones'"  (click)="tab='integraciones'">Integraciones</button>
+  </div>
+
+  <!-- ===== General ===== -->
+  <div *ngIf="tab==='general'" class="cards">
+    <div class="card">
+      <h3>Datos del condominio</h3>
+      <div class="grid-2">
+        <div class="field">
+          <label>Nombre</label>
+          <input type="text" [(ngModel)]="general.nombreCondominio" placeholder="Ej. AMI APARTAMENTOS" />
+        </div>
+        <div class="field">
+          <label>Moneda</label>
+          <select [(ngModel)]="general.moneda">
+            <option>Q</option><option>$</option><option>€</option><option>₡</option><option>S/</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Formato de fecha</label>
+          <select [(ngModel)]="general.formatoFecha">
+            <option value="dd-MM-y">dd-MM-y</option>
+            <option value="MM-dd-y">MM-dd-y</option>
+            <option value="y-MM-dd">y-MM-dd</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Zona horaria</label>
+          <input type="text" [(ngModel)]="general.zonaHoraria" placeholder="America/Guatemala" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Pagos ===== -->
+  <div *ngIf="tab==='pagos'" class="cards">
+    <div class="card">
+      <h3>Métodos de pago</h3>
+      <div class="toggles">
+        <label class="toggle"><input type="checkbox" [(ngModel)]="pagos.metodos.transferencia" /> Transferencia</label>
+        <label class="toggle"><input type="checkbox" [(ngModel)]="pagos.metodos.deposito" /> Depósito</label>
+        <label class="toggle"><input type="checkbox" [(ngModel)]="pagos.metodos.efectivo" /> Efectivo</label>
+        <label class="toggle"><input type="checkbox" [(ngModel)]="pagos.metodos.tarjeta" /> Tarjeta</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Parámetros de cobro</h3>
+      <div class="grid-3">
+        <div class="field">
+          <label>Día de vencimiento</label>
+          <input type="number" min="1" max="28" [(ngModel)]="pagos.diaVencimiento" />
+        </div>
+        <div class="field">
+          <label>Tolerancia (días)</label>
+          <input type="number" min="0" max="31" [(ngModel)]="pagos.diasTolerancia" />
+        </div>
+        <div class="field">
+          <label>Recargo por mora ({{ general.moneda }})</label>
+          <input type="number" min="0" step="0.01" [(ngModel)]="pagos.recargoPorMora" />
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>% mora (opcional)</label>
+          <input type="number" min="0" step="0.01" [(ngModel)]="pagos.porcentajeMora" />
+        </div>
+        <div class="field">
+          <label>Monto cuota ({{ general.moneda }})</label>
+          <input type="number" min="0" step="0.01" [(ngModel)]="pagos.montoCuota" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Cuentas bancarias</h3>
+      <div class="grid-4">
+        <div class="field"><label>Banco</label><input type="text" [(ngModel)]="nuevaCuenta.banco" /></div>
+        <div class="field"><label>Nombre</label><input type="text" [(ngModel)]="nuevaCuenta.nombre" /></div>
+        <div class="field"><label>Número</label><input type="text" [(ngModel)]="nuevaCuenta.numero" /></div>
+        <div class="field">
+          <label>Tipo</label>
+          <select [(ngModel)]="nuevaCuenta.tipo">
+            <option>Monetaria</option><option>Ahorro</option><option>Cheques</option>
+          </select>
+        </div>
+      </div>
+      <div class="actions"><button class="tp-btn" (click)="addCuenta()">Agregar cuenta</button></div>
+
+      <div class="table-card" *ngIf="pagos.cuentas.length">
+        <table class="tp-table">
+          <thead><tr><th>Banco</th><th>Nombre</th><th>Número</th><th>Tipo</th><th></th></tr></thead>
+          <tbody>
+            <tr *ngFor="let c of pagos.cuentas; let i = index">
+              <td>{{ c.banco }}</td><td>{{ c.nombre }}</td><td>{{ c.numero }}</td><td>{{ c.tipo }}</td>
+              <td class="row-actions"><button class="mini-btn mini-btn--danger" (click)="delCuenta(i)">Eliminar</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Notificaciones ===== -->
+  <div *ngIf="tab==='notificaciones'" class="cards">
+    <div class="card">
+      <h3>Canales</h3>
+      <div class="toggles">
+        <label class="toggle"><input type="checkbox" [(ngModel)]="notificaciones.canales.email" /> Email</label>
+        <label class="toggle"><input type="checkbox" [(ngModel)]="notificaciones.canales.push" /> Push</label>
+        <label class="toggle"><input type="checkbox" [(ngModel)]="notificaciones.canales.whatsapp" /> WhatsApp</label>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Remitente (From)</label>
+          <input type="text" [(ngModel)]="notificaciones.remitenteCorreo" placeholder="TriPagos <no-reply@...>" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Plantillas</h3>
+      <div class="field">
+        <label>Pago aprobado</label>
+        <textarea rows="3" [(ngModel)]="notificaciones.plantillaPagoAprobado"></textarea>
+      </div>
+      <div class="field">
+        <label>Aviso de saldo / corte</label>
+        <textarea rows="3" [(ngModel)]="notificaciones.plantillaCorte"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Reservaciones ===== -->
+  <div *ngIf="tab==='reservaciones'" class="cards">
+    <div class="card">
+      <h3>Parámetros</h3>
+      <div class="toggles">
+        <label class="toggle"><input type="checkbox" [(ngModel)]="reservaciones.habilitadas" /> Habilitar reservaciones</label>
+      </div>
+      <div class="grid-3">
+        <div class="field"><label>Anticipación mínima (horas)</label><input type="number" min="0" [(ngModel)]="reservaciones.anticipacionMinHoras" /></div>
+        <div class="field"><label>Máx. horas por día</label><input type="number" min="1" [(ngModel)]="reservaciones.maxHorasPorDia" /></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Amenidades</h3>
+        <button class="tp-btn tp-btn--green" (click)="openAmenityModal()">Agregar amenidad</button>
+      </div>
+
+      <div class="table-card" *ngIf="reservaciones.amenidades.length">
+        <table class="tp-table">
+          <thead>
+            <tr><th>Nombre</th><th>Horario</th><th>Aforo</th><th>Costo ({{ general.moneda }})</th><th>Estado</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let a of reservaciones.amenidades; let i = index">
+              <td>{{ a.nombre }}</td>
+              <td>{{ a.horario }}</td>
+              <td>{{ a.aforo }}</td>
+              <td>{{ (a.costo || 0) | number:'1.2-2' }}</td>
+              <td>
+                <span class="badge"
+                  [class.badge--ok]="a.habilitada"
+                  [class.badge--off]="!a.habilitada">{{ a.habilitada ? 'Habilitada' : 'Deshabilitada' }}</span>
+              </td>
+              <td class="row-actions">
+                <button class="mini-btn" (click)="openAmenityModal(i)">Editar</button>
+                <button class="mini-btn mini-btn--danger" (click)="delAmenity(i)">Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Integraciones ===== -->
+  <div *ngIf="tab==='integraciones'" class="cards">
+    <div class="card">
+      <h3>SMTP (correo saliente)</h3>
+      <div class="grid-4">
+        <div class="field"><label>Host</label><input type="text" [(ngModel)]="integraciones.smtpHost" /></div>
+        <div class="field"><label>Puerto</label><input type="number" min="1" [(ngModel)]="integraciones.smtpPort" /></div>
+        <div class="field"><label>Usuario</label><input type="text" [(ngModel)]="integraciones.smtpUser" /></div>
+        <div class="field"><label>From</label><input type="text" [(ngModel)]="integraciones.smtpFrom" /></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>WhatsApp / Webhooks</h3>
+      <div class="field">
+        <label>Webhook URL</label>
+        <input type="url" [(ngModel)]="integraciones.whatsappWebhookUrl" placeholder="https://..." />
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer acciones -->
+  <div class="footer-actions">
+    <button class="tp-btn" (click)="resetAll()" [disabled]="saving">Restablecer</button>
+    <button class="tp-btn tp-btn--green" (click)="saveAll()" [disabled]="saving">Guardar cambios</button>
+  </div>
+</section>
+
+<!-- ===== Modal Amenidad ===== -->
+<div class="modal-backdrop" *ngIf="amenityModalOpen" (click)="closeAmenityModal()"></div>
+<div class="modal" *ngIf="amenityModalOpen" role="dialog" aria-modal="true">
+  <div class="modal__head">
+    <h3>{{ editingAmenityIndex===null ? 'Agregar amenidad' : 'Editar amenidad' }}</h3>
+    <button class="icon-btn" (click)="closeAmenityModal()">✕</button>
+  </div>
+  <div class="modal__body">
+    <div class="grid-2">
+      <div class="field"><label>Nombre</label><input type="text" [(ngModel)]="amenityForm.nombre" /></div>
+      <div class="field"><label>Horario</label><input type="text" [(ngModel)]="amenityForm.horario" placeholder="08:00 - 20:00" /></div>
+    </div>
+    <div class="grid-3">
+      <div class="field"><label>Aforo</label><input type="number" min="1" [(ngModel)]="amenityForm.aforo" /></div>
+      <div class="field"><label>Costo ({{ general.moneda }})</label><input type="number" min="0" step="0.01" [(ngModel)]="amenityForm.costo" /></div>
+      <div class="field toggle-row">
+        <label>Estado</label>
+        <label class="toggle"><input type="checkbox" [(ngModel)]="amenityForm.habilitada" /> Habilitada</label>
+      </div>
+    </div>
+    <div class="field"><label>Reglas</label><textarea rows="3" [(ngModel)]="amenityForm.reglas"></textarea></div>
+  </div>
+  <div class="modal__foot">
+    <button class="tp-btn" (click)="closeAmenityModal()">Cancelar</button>
+    <button class="tp-btn tp-btn--green" (click)="saveAmenity()" [disabled]="!amenityForm.nombre || !amenityForm.horario || !amenityForm.aforo">Guardar</button>
+  </div>
+</div>

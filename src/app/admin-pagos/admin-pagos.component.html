@@ -1,0 +1,204 @@
+<header class="topbar">
+  <div class="topbar__left">Administrador</div>
+  <div class="topbar__right">Hola, {{ usuario }}</div>
+</header>
+<hr class="topbar__divider" />
+
+<section class="page">
+  <h1 class="page__title">Pagos</h1>
+
+  <!-- Botonera -->
+  <div class="actions">
+    <button class="tp-btn tp-btn--green" type="button" (click)="onAccion('nuevo')">Registrar Pago</button>
+    <button class="tp-btn" type="button" (click)="onAccion('aprobar')"  [disabled]="!selectedCount()">Aprobar Seleccionados</button>
+    <button class="tp-btn" type="button" (click)="onAccion('rechazar')" [disabled]="!selectedCount()">Rechazar Seleccionados</button>
+  </div>
+
+  <!-- Barra de selección -->
+  <div class="bulk-bar" *ngIf="selectedCount()">
+    <div><strong>{{ selectedCount() }}</strong> seleccionados · Total: <strong>Q{{ selectedAmount() | number:'1.2-2' }}</strong></div>
+    <div class="bulk-bar__actions">
+      <button class="mini-btn mini-btn--green" (click)="openApproveBulk()">Aprobar</button>
+      <button class="mini-btn mini-btn--danger" (click)="openRejectBulk()">Rechazar</button>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-card">
+    <table class="tp-table">
+      <thead>
+        <tr>
+          <th class="sel-col">
+            <input #master type="checkbox"
+                   [checked]="allSelected()"
+                   (change)="toggleAll(master.checked)" />
+          </th>
+          <th>Fecha</th>
+          <th>Unidad/Cliente</th>
+          <th>Residente</th>
+          <th>Descripción</th>
+          <th>Método</th>
+          <th>Referencia</th>
+          <th>Monto</th>
+          <th>Estado</th>
+          <th>Adjunto</th>
+          <th style="width:190px">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of pagos">
+          <td class="sel-col">
+            <input #rowcb type="checkbox"
+                   [disabled]="p.estado!=='Pendiente'"
+                   [checked]="isSelected(p.id)"
+                   (change)="toggleOne(p.id, rowcb.checked)" />
+          </td>
+          <td>{{ p.fecha | date:'dd-MM-y HH:mm' }}</td>
+          <td>{{ p.unidad }}</td>
+          <td>{{ p.residente }}</td>
+          <td>{{ p.descripcion }}</td>
+          <td>{{ p.metodo }}</td>
+          <td>{{ p.referencia || '—' }}</td>
+          <td>Q{{ p.monto | number:'1.2-2' }}</td>
+          <td>
+            <span class="badge"
+              [class.badge--ok]="p.estado==='Aprobado'"
+              [class.badge--warn]="p.estado==='Pendiente'"
+              [class.badge--off]="p.estado==='Rechazado'">
+              {{ p.estado }}
+            </span>
+          </td>
+          <td>{{ p.adjuntoNombre || '—' }}</td>
+          <td class="row-actions">
+            <button class="mini-btn" (click)="openDetail(p)">Detalle</button>
+            <button class="mini-btn mini-btn--green"  (click)="openApprove(p)" [disabled]="p.estado!=='Pendiente'">Aprobar</button>
+            <button class="mini-btn mini-btn--danger" (click)="openReject(p)"  [disabled]="p.estado!=='Pendiente'">Rechazar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== Modal Registrar Pago ===== -->
+<div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()"></div>
+<div class="modal" *ngIf="modalOpen" role="dialog" aria-modal="true">
+  <div class="modal__head">
+    <h3>Registrar Pago</h3>
+    <button class="icon-btn" (click)="closeModal()" aria-label="Cerrar">✕</button>
+  </div>
+  <div class="modal__body">
+    <div class="field">
+      <label>Número de cliente / Apartamento <span class="req">*</span></label>
+      <input type="text" [(ngModel)]="form.unidad" placeholder="Ej. A143 o 000123" />
+    </div>
+    <div class="field">
+      <label>Número de boleta (banco) <span class="req">*</span></label>
+      <input type="text" [(ngModel)]="form.referencia" placeholder="Ej. 1234567890" />
+    </div>
+    <div class="field">
+      <label>Monto (Q) <span class="req">*</span></label>
+      <input type="number" min="0" step="0.01" [(ngModel)]="form.monto" />
+    </div>
+    <div class="field">
+      <label>Adjunto (opcional)</label>
+      <input type="file" (change)="onAdjuntoChange($event)" />
+      <small *ngIf="form.adjuntoNombre">Archivo: {{ form.adjuntoNombre }}</small>
+    </div>
+    <div class="field">
+      <label>Descripción</label>
+      <select [(ngModel)]="form.descripcion">
+        <option value="" disabled selected>Selecciona una opción</option>
+        <option>Mensualidad</option>
+        <option>Reservación</option>
+        <option>Multa</option>
+        <option>Otro</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal__foot">
+    <button class="tp-btn" (click)="closeModal()">Cancelar</button>
+    <button class="tp-btn tp-btn--green" (click)="save()" [disabled]="!form.unidad || !form.referencia || !form.monto">Guardar</button>
+  </div>
+</div>
+
+<!-- ===== Modal Detalle ===== -->
+<div class="modal-backdrop" *ngIf="detailOpen" (click)="closeDetail()"></div>
+<div class="modal" *ngIf="detailOpen" role="dialog" aria-modal="true">
+  <div class="modal__head">
+    <h3>Detalle de pago</h3>
+    <button class="icon-btn" (click)="closeDetail()">✕</button>
+  </div>
+  <div class="modal__body" *ngIf="selected as s">
+    <div class="field"><label>Fecha</label><div>{{ s.fecha | date:'dd-MM-y HH:mm' }}</div></div>
+    <div class="grid-2">
+      <div class="field"><label>Unidad/Cliente</label><div>{{ s.unidad }}</div></div>
+      <div class="field"><label>Residente</label><div>{{ s.residente }}</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Método</label><div>{{ s.metodo }}</div></div>
+      <div class="field"><label>Referencia</label><div>{{ s.referencia || '—' }}</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Monto</label><div>Q{{ s.monto | number:'1.2-2' }}</div></div>
+      <div class="field"><label>Estado</label>
+        <span class="badge" [class.badge--ok]="s.estado==='Aprobado'" [class.badge--warn]="s.estado==='Pendiente'" [class.badge--off]="s.estado==='Rechazado'">{{ s.estado }}</span>
+      </div>
+    </div>
+    <div class="field"><label>Descripción</label><div>{{ s.descripcion }}</div></div>
+    <div class="field"><label>Adjunto</label><div>{{ s.adjuntoNombre || '—' }}</div></div>
+    <div class="field" *ngIf="s.notas"><label>Notas</label><div>{{ s.notas }}</div></div>
+  </div>
+  <div class="modal__foot">
+    <button class="tp-btn" (click)="closeDetail()">Cerrar</button>
+  </div>
+</div>
+
+<!-- ===== Modales de aprobación/rechazo (individual y lote) ===== -->
+<div class="modal-backdrop" *ngIf="flowOpen" (click)="closeDecision()"></div>
+<div class="modal" *ngIf="flowOpen" role="dialog" aria-modal="true">
+  <div class="modal__head">
+    <h3>
+      {{ flowOpen==='approve' ? 'Aprobar pago' :
+         flowOpen==='reject'  ? 'Rechazar pago' :
+         flowOpen==='approve-bulk' ? 'Aprobar pagos seleccionados' :
+         'Rechazar pagos seleccionados' }}
+    </h3>
+    <button class="icon-btn" (click)="closeDecision()">✕</button>
+  </div>
+
+  <div class="modal__body">
+    <ng-container *ngIf="flowOpen==='approve' || flowOpen==='reject'; else bulkBody">
+      <div class="grid-2" *ngIf="selected as s">
+        <div class="field"><label>Unidad/Cliente</label><div>{{ s.unidad }}</div></div>
+        <div class="field"><label>Monto</label><div>Q{{ s.monto | number:'1.2-2' }}</div></div>
+      </div>
+      <div class="grid-2" *ngIf="selected as s">
+        <div class="field"><label>Método</label><div>{{ s.metodo }}</div></div>
+        <div class="field"><label>Referencia</label><div>{{ s.referencia || '—' }}</div></div>
+      </div>
+    </ng-container>
+
+    <ng-template #bulkBody>
+      <p>
+        Vas a {{ flowOpen==='approve-bulk' ? 'aprobar' : 'rechazar' }}
+        <strong>{{ selectedCount() }}</strong> pago(s)
+        por un total de <strong>Q{{ selectedAmount() | number:'1.2-2' }}</strong>.
+      </p>
+    </ng-template>
+
+    <div class="field">
+      <label>Notas (opcional)</label>
+      <textarea rows="3" [(ngModel)]="decisionNotes" placeholder="Comentario..."></textarea>
+    </div>
+  </div>
+
+  <div class="modal__foot">
+    <button class="tp-btn" (click)="closeDecision()">Cancelar</button>
+    <button class="tp-btn tp-btn--green" *ngIf="flowOpen==='approve'"       (click)="confirmApprove()">Confirmar aprobación</button>
+    <button class="tp-btn mini-btn--danger" *ngIf="flowOpen==='reject'"     (click)="confirmReject()">Confirmar rechazo</button>
+    <button class="tp-btn tp-btn--green" *ngIf="flowOpen==='approve-bulk'"  (click)="confirmApproveBulk()">Confirmar aprobación</button>
+    <button class="tp-btn mini-btn--danger" *ngIf="flowOpen==='reject-bulk'"(click)="confirmRejectBulk()">Confirmar rechazo</button>
+  </div>
+</div>

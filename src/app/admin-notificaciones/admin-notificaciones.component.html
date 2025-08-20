@@ -1,0 +1,172 @@
+<header class="topbar">
+  <div class="topbar__left">Administrador</div>
+  <div class="topbar__right">Hola, {{ usuario }}</div>
+</header>
+<hr class="topbar__divider" />
+
+<section class="page">
+  <h1 class="page__title">Notificaciones</h1>
+
+  <!-- Acciones -->
+  <div class="actions">
+    <button *ngFor="let a of acciones" type="button" class="tp-btn tp-btn--green" (click)="onAccion(a.action)">
+      {{ a.label }}
+    </button>
+  </div>
+
+  <!-- Notificaciones -->
+  <h2 class="section__title">Notificaciones enviadas</h2>
+  <div class="table-card">
+    <table class="tp-table">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Audiencia</th>
+          <th>Programación</th>
+          <th>Creada</th>
+          <th>Estado</th>
+          <th>Entregas</th>
+          <th>Leídos</th>
+          <th>Adjunto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let n of notificaciones">
+          <td>{{ n.titulo }}</td>
+          <td>{{ n.audiencia }}<ng-container *ngIf="n.unidad"> ({{ n.unidad }})</ng-container></td>
+          <td>{{ n.programacion ? (n.programacion | date:'dd-MM-y HH:mm') : '—' }}</td>
+          <td>{{ n.creadaEl | date:'dd-MM-y' }}</td>
+          <td>
+            <span class="badge"
+              [class.badge--ok]="n.estado==='Enviada'"
+              [class.badge--warn]="n.estado==='Programada'"
+              [class.badge--off]="n.estado==='Borrador'">
+              {{ n.estado }}
+            </span>
+          </td>
+          <td>{{ n.enviados }}</td>
+          <td>{{ n.leidos }}</td>
+          <td>{{ n.adjuntoNombre || '—' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Reportes de residentes -->
+  <h2 class="section__title">Reportes de residentes</h2>
+  <div class="table-card">
+    <table class="tp-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Unidad</th>
+          <th>Residente</th>
+          <th>Tipo</th>
+          <th>Detalle</th>
+          <th>Prioridad</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of reportes">
+          <td>{{ r.fecha | date:'dd-MM-y' }}</td>
+          <td>Apartamento {{ r.unidad }}</td>
+          <td>{{ r.residente }}</td>
+          <td>{{ r.tipo }}</td>
+          <td class="truncate">{{ r.detalle }}</td>
+          <td>
+            <span class="badge"
+              [class.badge--pri-low]="r.prioridad==='Baja'"
+              [class.badge--pri-mid]="r.prioridad==='Media'"
+              [class.badge--pri-hi]="r.prioridad==='Alta'">
+              {{ r.prioridad }}
+            </span>
+          </td>
+          <td>
+            <span class="badge"
+              [class.badge--ok]="r.estado==='Resuelto'"
+              [class.badge--warn]="r.estado==='En proceso'"
+              [class.badge--off]="r.estado==='Nuevo'">
+              {{ r.estado }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== Modal Crear Notificación ===== -->
+<div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()"></div>
+
+<div class="modal" *ngIf="modalOpen" role="dialog" aria-modal="true">
+  <div class="modal__head">
+    <h3>Crear notificación</h3>
+    <button class="icon-btn" (click)="closeModal()" aria-label="Cerrar">✕</button>
+  </div>
+
+  <div class="modal__body">
+    <div class="field">
+      <label>Título <span class="req">*</span></label>
+      <input type="text" [(ngModel)]="form.titulo" placeholder="Ej. Corte de agua programado" />
+    </div>
+
+    <div class="field">
+      <label>Mensaje</label>
+      <textarea rows="4" [(ngModel)]="form.mensaje" placeholder="Detalle del aviso..."></textarea>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Audiencia</label>
+        <select [(ngModel)]="form.audiencia">
+          <option value="Todos">Todos</option>
+          <option value="Torre A">Torre A</option>
+          <option value="Torre B">Torre B</option>
+          <option value="Unidad">Unidad específica</option>
+        </select>
+      </div>
+
+      <div class="field" *ngIf="form.audiencia==='Unidad'">
+        <label>Unidad</label>
+        <input type="text" [(ngModel)]="form.unidad" placeholder="Ej. A143" />
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field checkbox">
+        <label>
+          <input type="checkbox" [(ngModel)]="form.requiereAcuse" />
+          Requiere acuse de lectura
+        </label>
+      </div>
+
+      <div class="field">
+        <label>Adjunto</label>
+        <input type="file" (change)="onFileSelected($event)" />
+        <small *ngIf="form.adjuntoNombre">Seleccionado: {{ form.adjuntoNombre }}</small>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field checkbox">
+        <label>
+          <input type="checkbox" [(ngModel)]="form.programar" />
+          Programar envío
+        </label>
+      </div>
+
+      <div class="field" *ngIf="form.programar">
+        <label>Fecha y hora</label>
+        <input type="datetime-local" [(ngModel)]="form.fechaHora" />
+      </div>
+    </div>
+  </div>
+
+  <div class="modal__foot">
+    <button class="tp-btn" (click)="closeModal()" [disabled]="saving">Cancelar</button>
+    <button class="tp-btn tp-btn--green" (click)="saveNotification()" [disabled]="saving || !form.titulo">
+      Guardar {{ form.programar ? 'como Programada' : 'como Borrador' }}
+    </button>
+  </div>
+</div>

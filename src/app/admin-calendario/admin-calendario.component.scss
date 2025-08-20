@@ -1,0 +1,97 @@
+/* ===== Paleta/estilos compartidos ===== */
+$tp-green: #0BBF38;
+$tp-text-dark: #232323;
+$tp-muted: #6b7280;
+$tp-bg-soft: #f6f7f9;
+$tp-border: rgba(0,0,0,.08);
+$warn: #C9A400;   // amarillo chip
+$danger: #E34B47; // rojo chip
+
+/* Topbar */
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 24px 12px; color:$tp-text-dark; font-weight:700;
+  &__left{font-size:16px;} &__right{font-size:28px;}
+  &__divider{border:none;height:1px;background:$tp-border;margin:0;}
+}
+
+/* Página */
+.page{
+  padding:28px 24px 40px; background:#fff; min-height:calc(100vh - 72px);
+  &__title{font-size:36px; font-weight:800; margin:0 0 18px; color:$tp-text-dark;}
+}
+
+/* Botones */
+.actions{display:flex; flex-wrap:wrap; gap:16px; margin-bottom:20px;}
+.tp-btn{
+  appearance:none; border:0; border-radius:999px; padding:10px 18px;
+  font-weight:800; cursor:pointer; box-shadow:0 2px 0 rgba(0,0,0,.04);
+  &--green{ background:$tp-green; color:#fff;
+    &:hover{ filter:brightness(0.96); } &:active{ transform:translateY(1px); }
+  }
+}
+
+/* ===== Tarjeta de calendario ===== */
+.calendar-card{
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 1px 0 $tp-border, 0 1px 2px rgba(0,0,0,.03);
+  overflow:hidden;
+  padding:0;
+}
+
+/* Header del calendario (barra superior muy sutil, como en el mockup) */
+.calendar-head{
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; padding:12px 16px;
+  background:$tp-bg-soft;
+  border-bottom:1px solid $tp-border;
+}
+.cal-month{ font-weight:800; color:#2b2b2b; }
+.cal-btn{
+  background:transparent; border:0; font-weight:800; font-size:18px;
+  cursor:pointer; color:#555; padding:4px 8px; border-radius:8px;
+  &:hover{ background:rgba(0,0,0,.05); }
+}
+
+/* Grilla */
+.calendar-grid{
+  display:grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 120px;
+}
+
+.dow{
+  padding:10px 12px; font-weight:800; color:#7a7a7a; text-align:left;
+  border-right:1px solid $tp-border;
+  &:nth-child(7n){ border-right:none; }
+  background:#fff;
+}
+
+.cell{
+  position:relative;
+  border-right:1px solid $tp-border;
+  border-bottom:1px solid $tp-border;
+  padding:8px 10px 6px 10px;
+  &--muted{ background:#fff; color:#b9b9b9; }
+  &:nth-child(7n){ border-right:none; }
+}
+
+.cell__num{
+  font-weight:800; color:#2b2b2b; margin-bottom:6px;
+}
+
+/* Chips de evento */
+.chip{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px; font-weight:800; line-height:1.1;
+  margin:4px 0;
+  &--green{  background:rgba(11,191,56,.18); color:$tp-green; }
+  &--yellow{ background:rgba($warn, .25);   color:#7a6200; }
+  &--red{    background:rgba($danger,.18);  color:#8c1d1a; }
+}
+
+/* Host */
+:host{ display:block; background:#fff; }

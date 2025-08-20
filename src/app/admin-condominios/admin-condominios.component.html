@@ -1,0 +1,54 @@
+
+<header class="topbar">
+  <div class="topbar__left">Administrador</div>
+  <div class="topbar__right">Hola, {{ usuario }}</div>
+</header>
+<hr class="topbar__divider" />
+
+<section class="page">
+  <h1 class="page__title">Condominios</h1>
+
+  <!-- Botonera -->
+  <div class="actions">
+    <button
+      *ngFor="let a of acciones"
+      type="button"
+      class="tp-btn tp-btn--green"
+      (click)="onAccion(a.action)"
+    >
+      {{ a.label }}
+    </button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-card">
+    <table class="tp-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Alias</th>
+          <th>Dirección</th>
+          <th>Unidades</th>
+          <th>Administrador</th>
+          <th>Contacto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of condominios">
+          <td>{{ c.nombre }}</td>
+          <td>{{ c.alias }}</td>
+          <td>{{ c.direccion }}</td>
+          <td>{{ c.unidades }}</td>
+          <td>{{ c.administrador }}</td>
+          <td>
+            <div class="contact">
+              <span *ngIf="c.telefono">{{ c.telefono }}</span>
+              <span *ngIf="c.email">{{ c.email }}</span>
+              <span *ngIf="!c.telefono && !c.email">—</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

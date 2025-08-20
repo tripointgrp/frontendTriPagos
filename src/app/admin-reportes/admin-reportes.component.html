@@ -1,0 +1,120 @@
+<header class="topbar">
+  <div class="topbar__left">Administrador</div>
+  <div class="topbar__right">Hola, {{ usuario }}</div>
+</header>
+<hr class="topbar__divider" />
+
+<section class="page">
+  <h1 class="page__title">Reportes</h1>
+
+  <!-- Filtros -->
+<!-- Desde -->
+<input type="date"
+       [ngModel]="filtroDesde()"
+       (ngModelChange)="filtroDesde.set($event)" />
+
+<!-- Hasta -->
+<input type="date"
+       [ngModel]="filtroHasta()"
+       (ngModelChange)="filtroHasta.set($event)" />
+
+<!-- Estado -->
+<select
+  [ngModel]="filtroEstado()"
+  (ngModelChange)="filtroEstado.set($event)">
+  <option value="">Todos</option>
+  <option>Pendiente</option>
+  <option>Aprobado</option>
+  <option>Rechazado</option>
+</select>
+
+<!-- Tipo -->
+<select
+  [ngModel]="filtroTipo()"
+  (ngModelChange)="filtroTipo.set($event)">
+  <option value="">Todos</option>
+  <option>Mensualidad</option>
+  <option>Reservación</option>
+  <option>Multa</option>
+  <option>Otro</option>
+</select>
+
+<!-- Método -->
+<select
+  [ngModel]="filtroMetodo()"
+  (ngModelChange)="filtroMetodo.set($event)">
+  <option value="">Todos</option>
+  <option>Transferencia</option>
+  <option>Depósito</option>
+  <option>Efectivo</option>
+  <option>Tarjeta</option>
+</select>
+
+<!-- Unidad/Torre -->
+<input type="text"
+       placeholder="A143, Torre A..."
+       [ngModel]="filtroUnidad()"
+       (ngModelChange)="filtroUnidad.set($event)" />
+
+    <div class="filters__actions">
+      <button class="tp-btn" (click)="limpiarFiltros()">Limpiar</button>
+      <button class="tp-btn tp-btn--green" (click)="generarReporte()">Generar reporte</button>
+    </div>
+
+  <!-- KPIs -->
+  <div class="kpis">
+    <div class="kpi"><div class="kpi__label">Total (filtrado)</div><div class="kpi__value">Q{{ kpiTotal() | number:'1.2-2' }}</div></div>
+    <div class="kpi"><div class="kpi__label">Aprobado</div><div class="kpi__value">Q{{ kpiAprobado() | number:'1.2-2' }}</div></div>
+    <div class="kpi"><div class="kpi__label">Pendiente</div><div class="kpi__value">Q{{ kpiPend() | number:'1.2-2' }}</div></div>
+    <div class="kpi"><div class="kpi__label">Rechazado</div><div class="kpi__value">Q{{ kpiRech() | number:'1.2-2' }}</div></div>
+    <div class="kpi"><div class="kpi__label"># Pagos</div><div class="kpi__value">{{ kpiCount() }}</div></div>
+  </div>
+
+  <!-- Mini chart -->
+  <div class="chart-card">
+    <div class="chart-card__title">Montos por día (filtrado)</div>
+    <svg class="linechart" viewBox="0 0 360 160">
+      <!-- ejes simples -->
+      <line x1="10" y1="150" x2="350" y2="150" class="axis"/>
+      <line x1="10" y1="10"  x2="10"  y2="150" class="axis"/>
+      <polyline class="series" [attr.points]="getChartPoints()"></polyline>
+    </svg>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-card">
+    <table class="tp-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Unidad</th>
+          <th>Residente</th>
+          <th>Tipo</th>
+          <th>Método</th>
+          <th>Referencia</th>
+          <th>Monto</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of filtrados()">
+          <td>{{ p.fecha | date:'dd-MM-y' }}</td>
+          <td>{{ p.unidad }}</td>
+          <td>{{ p.residente }}</td>
+          <td>{{ p.descripcion }}</td>
+          <td>{{ p.metodo }}</td>
+          <td>{{ p.referencia || '—' }}</td>
+          <td>Q{{ p.monto | number:'1.2-2' }}</td>
+          <td>
+            <span class="badge"
+              [class.badge--ok]="p.estado==='Aprobado'"
+              [class.badge--warn]="p.estado==='Pendiente'"
+              [class.badge--off]="p.estado==='Rechazado'">
+              {{ p.estado }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

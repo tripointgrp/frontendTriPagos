@@ -1,0 +1,43 @@
+<header class="topbar">
+  <div class="topbar__left">Administrador</div>
+  <div class="topbar__right">Hola, {{ usuario }}</div>
+</header>
+<hr class="topbar__divider" />
+
+<section class="page">
+  <h1 class="page__title">Registro de Ingresos</h1>
+
+  <!-- Botonera -->
+  <div class="actions">
+    <button
+      *ngFor="let a of acciones"
+      type="button"
+      class="tp-btn tp-btn--green"
+      (click)="onAccion(a.action)"
+    >
+      {{ a.label }}
+    </button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-card">
+    <table class="tp-table">
+      <thead>
+        <tr>
+          <th>Unidad</th>
+          <th>Rubro</th>
+          <th>Emisión</th>
+          <th>Vencimiento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of ingresos">
+          <td>{{ i.unidad }}</td>
+          <td>{{ i.rubro }}</td>
+          <td>{{ i.emision | date:'dd-MM-y' }}</td>
+          <td>{{ i.vencimiento | date:'dd-MM-y' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

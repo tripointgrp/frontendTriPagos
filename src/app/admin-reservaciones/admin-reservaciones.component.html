@@ -1,0 +1,115 @@
+<header class="topbar">
+  <div class="topbar__left">Administrador</div>
+  <div class="topbar__right">Hola, {{ usuario }}</div>
+</header>
+<hr class="topbar__divider" />
+
+<section class="page">
+  <h1 class="page__title">Reservaciones</h1>
+
+  <!-- Botonera -->
+  <div class="actions">
+    <button
+      *ngFor="let a of acciones"
+      type="button"
+      class="tp-btn tp-btn--green"
+      (click)="onAccion(a.action)"
+    >
+      {{ a.label }}
+    </button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-card">
+    <table class="tp-table">
+      <thead>
+        <tr>
+          <th>Área</th>
+          <th>Unidad</th>
+          <th>Residente</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of reservaciones">
+          <td>{{ r.area }}</td>
+          <td>{{ r.unidad ? ('Apartamento ' + r.unidad) : '—' }}</td>
+          <td>{{ r.residente || '—' }}</td>
+          <td>{{ r.fecha | date:'dd-MM-y' }}</td>
+          <td>{{ r.hora }}</td>
+          <td>
+            <span class="badge"
+              [class.badge--ok]="r.estado==='Confirmada'"
+              [class.badge--warn]="r.estado==='Pendiente'"
+              [class.badge--off]="r.estado==='Cancelada'">
+              {{ r.estado }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== Modal: Nueva Reservación ===== -->
+<div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()"></div>
+
+<div class="modal" *ngIf="modalOpen" role="dialog" aria-modal="true">
+  <div class="modal__head">
+    <h3>Nueva Reservación</h3>
+    <button class="icon-btn" (click)="closeModal()" aria-label="Cerrar">✕</button>
+  </div>
+
+  <div class="modal__body">
+    <div class="field">
+      <label>Área / Amenidad <span class="req">*</span></label>
+      <select [(ngModel)]="form.area" (ngModelChange)="checkOverlapOnChange()">
+        <option value="" disabled selected>Selecciona un área</option>
+        <option *ngFor="let a of areas" [value]="a">{{ a }}</option>
+      </select>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Fecha <span class="req">*</span></label>
+        <input type="date" [(ngModel)]="form.fecha" (ngModelChange)="checkOverlapOnChange()" />
+      </div>
+
+      <div class="field">
+        <label>Horario <span class="req">*</span></label>
+        <select [(ngModel)]="form.hora" (ngModelChange)="checkOverlapOnChange()">
+          <option value="" disabled selected>Selecciona un horario</option>
+          <option *ngFor="let h of horarios" [value]="h">{{ h }}</option>
+        </select>
+
+        <!-- Mensaje de error por traslape -->
+        <div class="field__error" *ngIf="overlapError">
+          {{ overlapError }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Opcionales -->
+    <div class="grid-2">
+      <div class="field">
+        <label>Unidad (opcional)</label>
+        <input type="text" [(ngModel)]="form.unidad" placeholder="Ej. A143" />
+      </div>
+      <div class="field">
+        <label>Residente (opcional)</label>
+        <input type="text" [(ngModel)]="form.residente" placeholder="Nombre del residente" />
+      </div>
+    </div>
+  </div>
+
+  <div class="modal__foot">
+    <button class="tp-btn" (click)="closeModal()" [disabled]="saving">Cancelar</button>
+    <button class="tp-btn tp-btn--green"
+            (click)="saveReservation()"
+            [disabled]="saving || !form.area || !form.fecha || !form.hora || !!overlapError">
+      Guardar
+    </button>
+  </div>
+</div>

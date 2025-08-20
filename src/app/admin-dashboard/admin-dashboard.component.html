@@ -1,0 +1,49 @@
+<header class="topbar">
+  <div class="topbar__left">Administrador</div>
+  <div class="topbar__right">Hola, {{ usuario }}</div>
+</header>
+<hr class="topbar__divider" />
+
+<section class="page">
+  <h1 class="page__title">Dashboard</h1>
+
+  <!-- KPIs -->
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kpi__label">Deuda actual</div>
+      <div class="kpi__value">Q{{ deudaActual | number:'1.2-2' }}</div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi__label">Ultimo pago</div>
+      <div class="kpi__value">{{ ultimoPagoFecha | date:'dd MMM, y' }}</div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi__label">Pagos aprobados</div>
+      <div class="kpi__value">{{ pagosAprobados }}</div>
+    </div>
+  </div>
+
+  <h2 class="section__title">Pagos recientes</h2>
+
+  <!-- Tabla -->
+  <div class="table-card">
+    <table class="tp-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Descripción</th>
+          <th>Monto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of pagosRecientes">
+          <td>{{ p.fecha | date:'dd MMM, y' }}</td>
+          <td>{{ p.descripcion }}</td>
+          <td>Q{{ p.monto | number:'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

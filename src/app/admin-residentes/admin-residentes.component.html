@@ -1,0 +1,120 @@
+<header class="topbar">
+  <div class="topbar__left">Administrador</div>
+  <div class="topbar__right">Hola, {{ usuario }}</div>
+</header>
+<hr class="topbar__divider" />
+
+<section class="page">
+  <h1 class="page__title">Residentes</h1>
+
+  <!-- Botonera -->
+  <div class="actions">
+    <button
+      *ngFor="let a of acciones"
+      class="tp-btn tp-btn--green"
+      type="button"
+      (click)="onAccion(a.action)"
+    >
+      {{ a.label }}
+    </button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-card">
+    <table class="tp-table">
+      <thead>
+        <tr>
+          <th>Unidad</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Estado</th>
+          <th>Deuda</th>
+          <th>Último pago</th>
+          <th style="width:150px">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of residentes">
+          <td>Apartamento {{ r.unidad }}</td>
+          <td>{{ r.nombre }}</td>
+          <td>{{ r.email }}</td>
+          <td>{{ r.telefono }}</td>
+          <td>
+            <span class="badge" [class.badge--ok]="r.estado==='Activo'" [class.badge--off]="r.estado==='Inactivo'">
+              {{ r.estado }}
+            </span>
+          </td>
+          <td>Q{{ r.deuda | number:'1.2-2' }}</td>
+          <td>{{ r.ultimoPago ? (r.ultimoPago | date:'dd-MM-y') : '—' }}</td>
+          <td class="row-actions">
+            <button class="mini-btn" (click)="openEdit(r)">Editar</button>
+            <button class="mini-btn mini-btn--danger" (click)="delete(r)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== Modal Agregar/Editar Residente ===== -->
+<div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()"></div>
+
+<div class="modal" *ngIf="modalOpen" role="dialog" aria-modal="true">
+  <div class="modal__head">
+    <h3>{{ mode === 'create' ? 'Agregar residente' : 'Editar residente' }}</h3>
+    <button class="icon-btn" (click)="closeModal()" aria-label="Cerrar">✕</button>
+  </div>
+
+  <div class="modal__body">
+    <div class="grid-2">
+      <div class="field">
+        <label>Unidad <span class="req">*</span></label>
+        <input type="text" [(ngModel)]="form.unidad" placeholder="Ej. A143" />
+      </div>
+      <div class="field">
+        <label>Estado</label>
+        <select [(ngModel)]="form.estado">
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Nombre <span class="req">*</span></label>
+      <input type="text" [(ngModel)]="form.nombre" placeholder="Nombre completo" />
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Email <span class="req">*</span></label>
+        <input type="email" [(ngModel)]="form.email" placeholder="correo@dominio.com" />
+      </div>
+      <div class="field">
+        <label>Teléfono</label>
+        <input type="text" [(ngModel)]="form.telefono" placeholder="5555-0000" />
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Deuda (Q)</label>
+        <input type="number" min="0" step="0.01" [(ngModel)]="form.deuda" />
+      </div>
+      <div class="field">
+        <label>Último pago</label>
+        <input type="date" [(ngModel)]="form.ultimoPago" />
+      </div>
+    </div>
+  </div>
+
+  <div class="modal__foot">
+    <button class="tp-btn" (click)="closeModal()" [disabled]="saving">Cancelar</button>
+    <button class="tp-btn tp-btn--green"
+            (click)="save()"
+            [disabled]="saving || !form.unidad || !form.nombre || !form.email">
+      {{ mode === 'create' ? 'Guardar' : 'Actualizar' }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,126 @@
+<header class="topbar">
+  <div class="topbar__left">Administrador</div>
+  <div class="topbar__right">Hola, {{ usuario }}</div>
+</header>
+<hr class="topbar__divider" />
+
+<section class="page">
+  <h1 class="page__title">Áreas Comunales</h1>
+
+  <!-- Botonera -->
+  <div class="actions">
+    <button *ngFor="let a of acciones"
+            class="tp-btn tp-btn--green"
+            type="button"
+            (click)="onAccion(a.action)">
+      {{ a.label }}
+    </button>
+  </div>
+
+  <!-- Tabla editable -->
+  <div class="table-card">
+    <table class="tp-table tp-table--areas">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Ubicación</th>
+          <th>Horario</th>
+          <th>Reserva</th>
+          <th>Capacidad</th>
+          <th>Estado</th>
+          <th style="width:160px">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let a of areas">
+          <!-- Nombre -->
+          <td>
+            <ng-container *ngIf="!a.edit; else nombreEdit">
+              {{ a.nombre || '—' }}
+            </ng-container>
+            <ng-template #nombreEdit>
+              <input type="text" [(ngModel)]="a.nombre" placeholder="Nombre del área" />
+            </ng-template>
+          </td>
+
+          <!-- Ubicación -->
+          <td>
+            <ng-container *ngIf="!a.edit; else ubicacionEdit">
+              {{ a.ubicacion || '—' }}
+            </ng-container>
+            <ng-template #ubicacionEdit>
+              <input type="text" [(ngModel)]="a.ubicacion" placeholder="Ej. Torre A - PB" />
+            </ng-template>
+          </td>
+
+          <!-- Horario -->
+          <td class="horario">
+            <ng-container *ngIf="!a.edit; else horarioEdit">
+              {{ a.abre }} - {{ a.cierra }}
+            </ng-container>
+            <ng-template #horarioEdit>
+              <div class="time-row">
+                <input class="time" type="time" [(ngModel)]="a.abre" />
+                <span>—</span>
+                <input class="time" type="time" [(ngModel)]="a.cierra" />
+              </div>
+            </ng-template>
+          </td>
+
+          <!-- Requiere reserva -->
+          <td>
+            <ng-container *ngIf="!a.edit; else reservaEdit">
+              <span class="badge" [class.badge--ok]="a.requiereReserva" [class.badge--off]="!a.requiereReserva">
+                {{ a.requiereReserva ? 'Sí' : 'No' }}
+              </span>
+            </ng-container>
+            <ng-template #reservaEdit>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="a.requiereReserva" />
+                <span></span>
+              </label>
+            </ng-template>
+          </td>
+
+          <!-- Capacidad -->
+          <td>
+            <ng-container *ngIf="!a.edit; else capEdit">
+              {{ a.capacidad || '—' }}
+            </ng-container>
+            <ng-template #capEdit>
+              <input type="number" min="1" [(ngModel)]="a.capacidad" class="num" />
+            </ng-template>
+          </td>
+
+          <!-- Estado -->
+          <td>
+            <ng-container *ngIf="!a.edit; else estadoEdit">
+              <span class="badge" [class.badge--ok]="a.estado==='Activo'" [class.badge--off]="a.estado==='Inactivo'">
+                {{ a.estado }}
+              </span>
+            </ng-container>
+            <ng-template #estadoEdit>
+              <select [(ngModel)]="a.estado">
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
+            </ng-template>
+          </td>
+
+          <!-- Acciones -->
+          <td class="row-actions">
+            <ng-container *ngIf="!a.edit; else editBtns">
+              <button class="mini-btn" (click)="toggleEdit(a)">Editar</button>
+              <button class="mini-btn mini-btn--danger" (click)="remove(a)">Eliminar</button>
+            </ng-container>
+            <ng-template #editBtns>
+              <button class="mini-btn mini-btn--green" (click)="saveRow(a)" [disabled]="!a.nombre">Guardar</button>
+              <button class="mini-btn" (click)="cancelRow(a)">Cancelar</button>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
