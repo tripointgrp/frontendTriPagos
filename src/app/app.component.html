@@ -1,1 +1,14 @@
-<router-outlet></router-outlet>
+<ng-container *ngIf="isAdmin(); else normalView">
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <web-sidebar></web-sidebar>
+    </aside>
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</ng-container>
+
+<ng-template #normalView>
+  <router-outlet></router-outlet>
+</ng-template>

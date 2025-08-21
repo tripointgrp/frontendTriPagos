@@ -19,15 +19,17 @@ import { AdminNotificacionesComponent } from './admin-notificaciones/admin-notif
 import { AdminAreascomunalesComponent } from './admin-areascomunales/admin-areascomunales.component';
 import { AdminReportesComponent } from './admin-reportes/admin-reportes.component';
 import { AdminConfiguracionComponent } from './admin-configuracion/admin-configuracion.component';
+import { userOnlyGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: LandingPageComponent, pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'pagos', component: PagosComponent },
-  { path: 'reserva', component: ReservaComponent },
-  { path: 'consulta', component: ConsultaComponent},
-  { path: 'notificaciones', component: NotificacionesComponent},
+ // Rutas de usuario normal (bloqueadas para admin con el guard)
+  { path: '', component: LandingPageComponent, pathMatch: 'full',canActivate: [userOnlyGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [userOnlyGuard] },
+  { path: 'home', component: HomeComponent, canActivate: [userOnlyGuard] },
+  { path: 'pagos', component: PagosComponent, canActivate: [userOnlyGuard] },
+  { path: 'reserva', component: ReservaComponent, canActivate: [userOnlyGuard] },
+  { path: 'consulta', component: ConsultaComponent, canActivate: [userOnlyGuard] },
+  { path: 'notificaciones', component: NotificacionesComponent, canActivate: [userOnlyGuard] },
 
 //PANTALLAS ADMIN
   { path: 'ingresos', component: IngresosRegistroComponent},

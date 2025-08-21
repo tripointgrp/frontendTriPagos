@@ -20,6 +20,7 @@
       [routerLink]="item.route"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
+      (click)="onNavClick(item.route)"
     >
       <span class="material-icons tp-nav__icon">{{ item.icon }}</span>
       <span class="tp-nav__label">{{ item.label }}</span>
