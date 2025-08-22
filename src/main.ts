@@ -8,9 +8,9 @@ import { provideAnalytics, getAnalytics } from '@angular/fire/analytics';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
-import { environment } from './environments/environment';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
+import { environment } from './environments/environment';
 
 bootstrapApplication(AppComponent, {
   providers: [
