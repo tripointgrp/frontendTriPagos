@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "buildCommand": "npm run build -- --configuration production",
-  "outputDirectory": "dist/tripagos/browser",
-  "routes": [
-    { "src": "/(.*)", "dest": "/index.html" }
-  ]
-}
