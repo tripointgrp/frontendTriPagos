@@ -1,9 +1,8 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "dist/tripagos/server/server.mjs", "use": "@vercel/node" }
-  ],
+  "buildCommand": "npm run build -- --configuration production",
+  "outputDirectory": "dist/tripagos/browser",
   "routes": [
-    { "src": "/(.*)", "dest": "dist/tripagos/server/server.mjs" }
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
