@@ -23,8 +23,8 @@ import { userOnlyGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
  // Rutas de usuario normal (bloqueadas para admin con el guard)
-  { path: '', component: LandingPageComponent, pathMatch: 'full',canActivate: [userOnlyGuard] },
-  { path: 'login', component: LoginComponent, canActivate: [userOnlyGuard] },
+  { path: '', component: LandingPageComponent, pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent, canActivate: [userOnlyGuard] },
   { path: 'pagos', component: PagosComponent, canActivate: [userOnlyGuard] },
   { path: 'reserva', component: ReservaComponent, canActivate: [userOnlyGuard] },
