@@ -1,0 +1,160 @@
+.usuarios-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.usuarios-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.usuarios-header h2 {
+  color: var(--green);
+  margin: 0;
+}
+
+.btn-agregar {
+  background: var(--green);
+  color: var(--white);
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn-agregar:hover {
+  background: var(--green-dark);
+}
+
+.form-usuarios {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--green);
+  background: white;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  text-align: right;
+}
+
+.btn-submit {
+  background: var(--green);
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background: var(--green-dark);
+}
+
+.tabla-wrapper {
+  overflow-x: auto;
+}
+
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-usuarios th {
+  background: var(--green);
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+
+.tabla-usuarios td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.acciones-col {
+  width: 160px;
+}
+
+.acciones {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-accion {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.btn-accion.editar {
+  background: var(--green);
+  color: white;
+}
+
+.btn-accion.editar:hover {
+  background: var(--green-dark);
+}
+
+.btn-accion.eliminar {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-accion.eliminar:hover {
+  background: #c0392b;
+}
+
+.estado {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.estado.activo {
+  background: #2ecc71;
+  color: white;
+}
+
+.estado.inactivo {
+  background: #e74c3c;
+  color: white;
+}

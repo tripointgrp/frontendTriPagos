@@ -1,0 +1,93 @@
+<div class="apartamentos-container">
+
+  <!-- Encabezado -->
+  <div class="apartamentos-header">
+    <h2>Gestión de Apartamentos</h2>
+    <button class="btn-agregar" (click)="resetForm()">+ Nuevo Apartamento</button>
+  </div>
+
+  <!-- Formulario -->
+  <form (ngSubmit)="guardarApartamento()" class="form-apartamentos">
+    <div class="form-group">
+      <label>Nombre del Apartamento</label>
+      <input type="text" [(ngModel)]="nuevoApartamento.nombre" name="nombre" required>
+    </div>
+
+    <div class="form-group">
+      <label>Alias / Abreviatura</label>
+      <input type="text" [(ngModel)]="nuevoApartamento.alias" name="alias" required>
+    </div>
+
+    <div class="form-group">
+      <label>Dirección</label>
+      <input type="text" [(ngModel)]="nuevoApartamento.direccion" name="direccion">
+    </div>
+
+    <div class="form-group">
+      <label>Teléfono</label>
+      <input type="text" [(ngModel)]="nuevoApartamento.telefono" name="telefono">
+    </div>
+
+    <div class="form-group">
+      <label>Administrador</label>
+      <input type="text" [(ngModel)]="nuevoApartamento.administrador" name="administrador">
+    </div>
+
+    <div class="form-group">
+      <label>Número de Unidades</label>
+      <input type="number" [(ngModel)]="nuevoApartamento.num_unidades" name="num_unidades">
+    </div>
+
+    <div class="form-group">
+      <label>Estado</label>
+      <select [(ngModel)]="nuevoApartamento.estado" name="estado">
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-submit">
+        {{ editando ? 'Actualizar' : 'Agregar' }} Apartamento
+      </button>
+    </div>
+  </form>
+
+  <!-- Tabla -->
+  <div class="tabla-wrapper">
+    <table class="tabla-apartamentos">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Alias</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Administrador</th>
+          <th>Unidades</th>
+          <th>Estado</th>
+          <th class="acciones-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let apto of apartamentos">
+          <td>{{ apto.nombre }}</td>
+          <td>{{ apto.alias }}</td>
+          <td>{{ apto.direccion }}</td>
+          <td>{{ apto.telefono }}</td>
+          <td>{{ apto.administrador }}</td>
+          <td>{{ apto.num_unidades }}</td>
+          <td>
+            <span class="estado" [class.activo]="apto.estado==='activo'" [class.inactivo]="apto.estado==='inactivo'">
+              {{ apto.estado }}
+            </span>
+          </td>
+          <td class="acciones">
+            <button (click)="editarApartamento(apto)" class="btn-accion editar">Editar</button>
+            <button (click)="eliminarApartamento(apto.id)" class="btn-accion eliminar">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
