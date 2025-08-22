@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -11,22 +12,8 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
-  selectedTab: 'admin' | 'vecino' =
-    window.innerWidth <= 767 ? 'vecino' : 'admin';
-
-  ngOnInit() {
-    window.addEventListener('resize', this.handleResize.bind(this));
-    this.handleResize();
-  }
-
-  ngOnDestroy() {
-    window.removeEventListener('resize', this.handleResize.bind(this));
-  }
-
-  private handleResize() {
-    this.selectedTab = window.innerWidth <= 767 ? 'vecino' : 'admin';
-  }
+export class LoginComponent implements OnInit, OnDestroy {
+  selectedTab: 'admin' | 'vecino' = 'admin'; // valor por defecto seguro en SSR
 
   admin = {
     usuario: '',
@@ -37,7 +24,30 @@ export class LoginComponent {
     codigo: '',
   };
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      window.addEventListener('resize', this.handleResize.bind(this));
+      this.handleResize(); // ahora sí puedes calcular con innerWidth
+    }
+  }
+
+  ngOnDestroy() {
+    if (isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('resize', this.handleResize.bind(this));
+    }
+  }
+
+  private handleResize() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.selectedTab = window.innerWidth <= 767 ? 'vecino' : 'admin';
+    }
+  }
 
   login() {
     if (this.selectedTab === 'admin') {
