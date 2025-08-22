@@ -1,9 +1,9 @@
 {
   "version": 2,
+  "builds": [
+    { "src": "dist/tripagos/server/server.mjs", "use": "@vercel/node" }
+  ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+    { "src": "/(.*)", "dest": "dist/tripagos/server/server.mjs" }
   ]
 }
