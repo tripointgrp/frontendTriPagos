@@ -13,7 +13,7 @@ import {
   orderBy,
   serverTimestamp,
 } from '@angular/fire/firestore';
-import type { Unidad } from '../apartamentos/apartamentos.component  '; // ajusta la ruta si cambia
+import type { Unidad } from '../apartamentos/apartamentos.component'; // ajusta la ruta si cambia
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
