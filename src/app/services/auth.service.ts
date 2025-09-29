@@ -1,4 +1,12 @@
-import { Injectable, NgZone, Inject, computed, signal, OnDestroy, PLATFORM_ID } from '@angular/core';
+import {
+  Injectable,
+  NgZone,
+  Inject,
+  computed,
+  signal,
+  OnDestroy,
+  PLATFORM_ID,
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 type UserRole = 'admin' | 'user' | null;
@@ -44,7 +52,9 @@ export class AuthService implements OnDestroy {
     }
     try {
       const type = (localStorage.getItem('type') || '').toLowerCase();
-      this.role.set(type === 'admin' ? 'admin' : type === 'user' ? 'user' : null);
+      this.role.set(
+        type === 'admin' ? 'admin' : type === 'user' ? 'user' : null
+      );
     } catch {
       this.role.set(null);
     }

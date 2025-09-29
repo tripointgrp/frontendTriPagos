@@ -1,93 +1,194 @@
-<div class="apartamentos-container">
-
+<div class="unidades-container">
   <!-- Encabezado -->
-  <div class="apartamentos-header">
-    <h2>Gestión de Apartamentos</h2>
-    <button class="btn-agregar" (click)="resetForm()">+ Nuevo Apartamento</button>
+  <div class="unidades-header">
+    <h2>Gestión de Unidades</h2>
+    <button class="btn-agregar" (click)="resetForm()">+ Nueva Unidad</button>
   </div>
 
   <!-- Formulario -->
-  <form (ngSubmit)="guardarApartamento()" class="form-apartamentos">
-    <div class="form-group">
-      <label>Nombre del Apartamento</label>
-      <input type="text" [(ngModel)]="nuevoApartamento.nombre" name="nombre" required>
+  <form (ngSubmit)="guardarUnidad()" class="form-unidades">
+    <!-- Identificación -->
+    <div class="card">
+      <h3>Identificación</h3>
+      <div class="grid">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" [(ngModel)]="unidad.nombre" name="nombre" required />
+        </div>
+        <div class="form-group">
+          <label>Alias / Abreviatura</label>
+          <input type="text" [(ngModel)]="unidad.alias" name="alias" required />
+        </div>
+        <div class="form-group">
+          <label>Tipo de unidad</label>
+          <select [(ngModel)]="unidad.tipo_unidad" name="tipo_unidad" required>
+            <option value="condominio">Condominio</option>
+            <option value="colonia">Colonia</option>
+            <option value="apartamentos">Apartamentos</option>
+            <option value="villas">Villas</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Administrador</label>
+          <input type="text" [(ngModel)]="unidad.administrador" name="administrador" />
+        </div>
+        <div class="form-group">
+          <label>Teléfono contacto</label>
+          <input type="text" [(ngModel)]="unidad.telefono_contacto" name="telefono_contacto" />
+        </div>
+        <div class="form-group">
+          <label>Dirección (opcional)</label>
+          <input type="text" [(ngModel)]="unidad.direccion" name="direccion" />
+        </div>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label>Alias / Abreviatura</label>
-      <input type="text" [(ngModel)]="nuevoApartamento.alias" name="alias" required>
+    <!-- Estructura -->
+    <div class="card">
+      <h3>Estructura</h3>
+      <div class="grid">
+        <div class="form-group">
+          <label>Número de torres/bloques</label>
+          <input type="number" min="0" [(ngModel)]="unidad.torres_total" name="torres_total" />
+        </div>
+
+        <!-- Unidades por tipo -->
+        <div class="form-group">
+          <label>Casas</label>
+          <input type="number" min="0" [(ngModel)]="unidad.unidades_por_tipo.casas" name="u_casas" (input)="recalcularTotal()" />
+        </div>
+        <div class="form-group">
+          <label>Apartamentos</label>
+          <input type="number" min="0" [(ngModel)]="unidad.unidades_por_tipo.apartamentos" name="u_apartamentos" (input)="recalcularTotal()" />
+        </div>
+        <div class="form-group">
+          <label>Locales</label>
+          <input type="number" min="0" [(ngModel)]="unidad.unidades_por_tipo.locales" name="u_locales" (input)="recalcularTotal()" />
+        </div>
+
+        <div class="form-group">
+          <label>Unidades totales</label>
+          <input type="number" [value]="unidad.unidades_total" name="unidades_total" disabled />
+        </div>
+      </div>
+      <small class="hint">El total se calcula automáticamente con base en los tipos.</small>
     </div>
 
-    <div class="form-group">
-      <label>Dirección</label>
-      <input type="text" [(ngModel)]="nuevoApartamento.direccion" name="direccion">
+    <!-- Cobros -->
+    <div class="card">
+      <h3>Parámetros de cobro</h3>
+      <div class="grid">
+        <div class="form-group">
+          <label>Cuota de mantenimiento</label>
+          <input type="number" min="0" step="0.01" [(ngModel)]="unidad.cuota_mantenimiento" name="cuota_mantenimiento" required />
+        </div>
+        <div class="form-group">
+          <label>Moneda</label>
+          <select [(ngModel)]="unidad.moneda" name="moneda" required>
+            <option value="GTQ">GTQ</option>
+            <option value="USD">USD</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Periodicidad</label>
+          <select [(ngModel)]="unidad.periodicidad" name="periodicidad">
+            <option value="mensual">Mensual</option>
+            <option value="bimestral">Bimestral</option>
+            <option value="trimestral">Trimestral</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Día de corte</label>
+          <input type="number" min="1" max="31" [(ngModel)]="unidad.dia_corte" name="dia_corte" />
+        </div>
+        <div class="form-group">
+          <label>Día de vencimiento</label>
+          <input type="number" min="1" max="31" [(ngModel)]="unidad.dia_vencimiento" name="dia_vencimiento" />
+        </div>
+        <div class="form-group">
+          <label>Días de gracia</label>
+          <input type="number" min="0" [(ngModel)]="unidad.gracia_dias" name="gracia_dias" />
+        </div>
+        <div class="form-group">
+          <label>Recargo</label>
+          <select [(ngModel)]="unidad.recargo_tipo" name="recargo_tipo">
+            <option value="porcentaje">Porcentaje</option>
+            <option value="monto_fijo">Monto fijo</option>
+            <option value="">Sin recargo</option>
+          </select>
+        </div>
+        <div class="form-group" *ngIf="unidad.recargo_tipo">
+          <label>Valor recargo</label>
+          <input type="number" min="0" step="0.01" [(ngModel)]="unidad.recargo_valor" name="recargo_valor" />
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select [(ngModel)]="unidad.estado" name="estado">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label>Teléfono</label>
-      <input type="text" [(ngModel)]="nuevoApartamento.telefono" name="telefono">
-    </div>
+    <!-- Notas + Acciones -->
+    <div class="card">
+      <h3>Notas</h3>
+      <textarea [(ngModel)]="unidad.notas" name="notas" rows="3" class="text-area"></textarea>
 
-    <div class="form-group">
-      <label>Administrador</label>
-      <input type="text" [(ngModel)]="nuevoApartamento.administrador" name="administrador">
-    </div>
-
-    <div class="form-group">
-      <label>Número de Unidades</label>
-      <input type="number" [(ngModel)]="nuevoApartamento.num_unidades" name="num_unidades">
-    </div>
-
-    <div class="form-group">
-      <label>Estado</label>
-      <select [(ngModel)]="nuevoApartamento.estado" name="estado">
-        <option value="activo">Activo</option>
-        <option value="inactivo">Inactivo</option>
-      </select>
-    </div>
-
-    <div class="form-actions">
-      <button type="submit" class="btn-submit">
-        {{ editando ? 'Actualizar' : 'Agregar' }} Apartamento
-      </button>
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">
+          {{ editando ? 'Actualizar' : 'Agregar' }} Unidad
+        </button>
+      </div>
     </div>
   </form>
 
   <!-- Tabla -->
   <div class="tabla-wrapper">
-    <table class="tabla-apartamentos">
+    <table class="tabla-unidades">
       <thead>
         <tr>
           <th>Nombre</th>
           <th>Alias</th>
-          <th>Dirección</th>
-          <th>Teléfono</th>
-          <th>Administrador</th>
-          <th>Unidades</th>
+          <th>Tipo</th>
+          <th>Torres</th>
+          <th>Casas</th>
+          <th>Apts</th>
+          <th>Locales</th>
+          <th>Total</th>
+          <th>Mantenimiento</th>
+          <th>Corte/Venc.</th>
           <th>Estado</th>
           <th class="acciones-col">Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let apto of apartamentos">
-          <td>{{ apto.nombre }}</td>
-          <td>{{ apto.alias }}</td>
-          <td>{{ apto.direccion }}</td>
-          <td>{{ apto.telefono }}</td>
-          <td>{{ apto.administrador }}</td>
-          <td>{{ apto.num_unidades }}</td>
+        <tr *ngFor="let u of unidades">
+          <td>{{ u.nombre }}</td>
+          <td>{{ u.alias }}</td>
+          <td class="chip">{{ u.tipo_unidad }}</td>
+          <td class="right">{{ u.torres_total || 0 }}</td>
+          <td class="right">{{ u.unidades_por_tipo?.casas || 0 }}</td>
+          <td class="right">{{ u.unidades_por_tipo?.apartamentos || 0 }}</td>
+          <td class="right">{{ u.unidades_por_tipo?.locales || 0 }}</td>
+          <td class="right strong">{{ u.unidades_total || 0 }}</td>
           <td>
-            <span class="estado" [class.activo]="apto.estado==='activo'" [class.inactivo]="apto.estado==='inactivo'">
-              {{ apto.estado }}
+            <span class="money">{{ u.moneda }} {{ u.cuota_mantenimiento | number:'1.2-2' }}</span>
+          </td>
+          <td>{{ u.dia_corte || '-' }}/{{ u.dia_vencimiento || '-' }}</td>
+          <td>
+            <span class="estado" [class.activo]="u.estado==='activo'" [class.inactivo]="u.estado==='inactivo'">
+              {{ u.estado }}
             </span>
           </td>
           <td class="acciones">
-            <button (click)="editarApartamento(apto)" class="btn-accion editar">Editar</button>
-            <button (click)="eliminarApartamento(apto.id)" class="btn-accion eliminar">Eliminar</button>
+            <button (click)="editarUnidad(u)" class="btn-accion editar">Editar</button>
+            <button (click)="eliminarUnidad(u._id)" class="btn-accion eliminar">Eliminar</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-
 </div>

@@ -20,16 +20,18 @@ import { AdminAreascomunalesComponent } from './admin-areascomunales/admin-areas
 import { AdminReportesComponent } from './admin-reportes/admin-reportes.component';
 import { AdminConfiguracionComponent } from './admin-configuracion/admin-configuracion.component';
 import { userOnlyGuard } from './guard/auth.guard';
+import { ApartamentosComponent } from './apartamentos/apartamentos.component';
 
 export const routes: Routes = [
  // Rutas de usuario normal (bloqueadas para admin con el guard)
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent, canActivate: [userOnlyGuard] },
-  { path: 'pagos', component: PagosComponent, canActivate: [userOnlyGuard] },
-  { path: 'reserva', component: ReservaComponent, canActivate: [userOnlyGuard] },
-  { path: 'consulta', component: ConsultaComponent, canActivate: [userOnlyGuard] },
-  { path: 'notificaciones', component: NotificacionesComponent, canActivate: [userOnlyGuard] },
+  { path: 'home', component: HomeComponent },
+  { path: 'pagos', component: PagosComponent },
+  { path: 'reserva', component: ReservaComponent },
+  { path: 'consulta', component: ConsultaComponent },
+  { path: 'apartamentos', component: ApartamentosComponent },
+  { path: 'notificaciones', component: NotificacionesComponent },
 
 //PANTALLAS ADMIN
   { path: 'ingresos', component: IngresosRegistroComponent},
