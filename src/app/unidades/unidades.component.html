@@ -1,0 +1,362 @@
+<div class="unidades-container">
+  <!-- Encabezado -->
+  <div class="unidades-header">
+    <h2>Gestión de Unidades / Condominios</h2>
+    <button
+      class="tp-btn tp-btn--green"
+      (click)="resetForm(); showModal = true"
+    >
+      + Nueva Unidad
+    </button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-card">
+    <table class="tp-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Alias</th>
+          <th>Dirección</th>
+          <th>Tipo</th>
+          <th>Torres</th>
+          <th>Unidades</th>
+          <th>Estado</th>
+          <th class="acciones-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of unidades">
+          <td>{{ u.nombre }}</td>
+          <td>{{ u.alias || "—" }}</td>
+          <td>{{ u.direccion }}</td>
+          <td>{{ u.tipo_unidad }}</td>
+          <td>{{ u.torres_total ?? "—" }}</td>
+          <td>{{ u.unidades_total ?? "—" }}</td>
+          <td>
+            <label class="switch">
+              <input
+                type="checkbox"
+                [checked]="u.estado === 'activo'"
+                (change)="toggleEstado(u)"
+              />
+              <span class="slider"></span>
+            </label>
+          </td>
+          <td class="acciones">
+            <button (click)="editarUnidad(u)" class="icon-btn edit">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button (click)="eliminarUnidad(u.id)" class="icon-btn delete">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== Modal ===== -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="showModal = false"></div>
+<div class="modal" *ngIf="showModal">
+  <div class="modal__head">
+    <h3>{{ editando ? "Editar Unidad" : "Nueva Unidad" }}</h3>
+    <button class="icon-btn" (click)="showModal = false">✕</button>
+  </div>
+
+  <div class="modal__body">
+    <!-- Identificación -->
+    <div class="field">
+      <label>Nombre</label>
+      <input
+        type="text"
+        [(ngModel)]="nuevaUnidad.nombre"
+        placeholder="Ej. Condominio Las Flores"
+      />
+    </div>
+    <div class="field">
+      <label>Alias</label>
+      <input
+        type="text"
+        [(ngModel)]="nuevaUnidad.alias"
+        placeholder="Nombre corto"
+      />
+    </div>
+    <div class="field">
+      <label>Dirección</label>
+      <textarea
+        [(ngModel)]="nuevaUnidad.direccion"
+        placeholder="Dirección completa"
+      ></textarea>
+    </div>
+
+    <!-- Contacto principal -->
+    <div class="field">
+      <label>Nombre de contacto</label>
+      <input type="text" [(ngModel)]="nuevaUnidad.nombre_contacto" />
+    </div>
+    <div class="field">
+      <label>Teléfono de contacto</label>
+      <input type="text" [(ngModel)]="nuevaUnidad.telefono_contacto" />
+    </div>
+    <div class="field">
+      <label>Email de contacto</label>
+      <input type="email" [(ngModel)]="nuevaUnidad.email_contacto" />
+    </div>
+
+    <!-- Representante legal -->
+    <div class="field">
+      <label>Nombre representante</label>
+      <input type="text" [(ngModel)]="nuevaUnidad.nombre_representante" />
+    </div>
+    <div class="field">
+      <label>NIT representante</label>
+      <input type="text" [(ngModel)]="nuevaUnidad.nit_representante" />
+    </div>
+    <div class="field">
+      <label>DPI representante</label>
+      <input type="text" [(ngModel)]="nuevaUnidad.dpi_representante" />
+    </div>
+
+    <!-- Operación -->
+    <div class="field">
+      <label>Administrador</label>
+      <ng-select
+        [items]="usuariosActivos"
+        bindLabel="nombre"
+        bindValue="id"
+        [(ngModel)]="nuevaUnidad.administrador"
+        [placeholder]="
+          !nuevaUnidad.administrador ? 'Selecciona un usuario activo' : ''
+        "
+        class="custom-select"
+      >
+        <!-- Personalizamos lo que se muestra en el input -->
+        <ng-template ng-label-tmp let-item="item">
+          <span
+            >{{ item.nombre }}
+            <small style="color: #888">({{ item.email }})</small></span
+          >
+        </ng-template>
+
+        <!-- Personalizamos las opciones de la lista -->
+        <ng-template ng-option-tmp let-item="item">
+          {{ item.nombre }} — {{ item.email }}
+        </ng-template>
+      </ng-select>
+    </div>
+
+    <div class="field">
+      <label>Tipo de unidad</label>
+      <select [(ngModel)]="nuevaUnidad.tipo_unidad">
+        <option value="" disabled selected>Selecciona un tipo</option>
+        <option value="condominio">Condominio</option>
+        <option value="colonia">Colonia</option>
+        <option value="apartamentos">Apartamentos</option>
+        <option value="villas">Villas</option>
+      </select>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Torres (total)</label>
+        <input
+          type="number"
+          [(ngModel)]="nuevaUnidad.torres_total"
+          placeholder="0 si no aplica"
+        />
+      </div>
+      <div class="field">
+        <label>Unidades (total)</label>
+        <input
+          type="number"
+          [(ngModel)]="nuevaUnidad.unidades_total"
+          placeholder="Total de viviendas"
+        />
+      </div>
+    </div>
+
+    <!-- Unidades por tipo (objeto) -->
+    <div class="field">
+      <label>Unidades por tipo</label>
+      <div *ngFor="let t of tiposUnidades; let i = index" class="row-flex">
+        <input
+          [(ngModel)]="t.tipo"
+          placeholder="apartamentos / casas / locales"
+        />
+        <input type="number" [(ngModel)]="t.cantidad" placeholder="0" />
+        <button class="icon-btn delete" (click)="removeTipo(i)">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <button class="mini-btn" (click)="addTipo()">+ Agregar tipo</button>
+    </div>
+
+    <!-- Torres (array) -->
+    <div class="field">
+      <label>Torres</label>
+      <div *ngFor="let t of torres; let i = index" class="row-flex">
+        <input [(ngModel)]="t.nombre" placeholder="Torre A" />
+        <input
+          type="number"
+          [(ngModel)]="t.unidades_total"
+          placeholder="Unidades"
+        />
+        <button class="icon-btn delete" (click)="removeTorre(i)" title="Eliminar torre">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <button class="mini-btn" (click)="addTorre()">+ Agregar torre</button>
+    </div>
+
+    <!-- Parqueos (cantidad o códigos) -->
+    <div class="field">
+      <label>Parqueos</label>
+      <div class="row-flex gap">
+        <label
+          ><input
+            type="radio"
+            name="parqModo"
+            [(ngModel)]="parqueosModo"
+            value="cantidad"
+          />
+          Por cantidad</label
+        >
+        <label
+          ><input
+            type="radio"
+            name="parqModo"
+            [(ngModel)]="parqueosModo"
+            value="codigos"
+          />
+          Por códigos</label
+        >
+      </div>
+
+      <div *ngIf="parqueosModo === 'cantidad'">
+        <input
+          type="number"
+          [(ngModel)]="parqueosCantidad"
+          placeholder="Cantidad total"
+        />
+      </div>
+
+      <div *ngIf="parqueosModo === 'codigos'">
+        <div class="tags">
+          <span class="tag" *ngFor="let c of parqueosCodigos; let i = index">
+            {{ c }}
+            <button type="button" (click)="removeParqueoCodigo(i)">×</button>
+          </span>
+        </div>
+        <input
+          placeholder="Escribe un código y presiona Enter (ej: P-12)"
+          (keydown.enter)="addParqueoCodigo($event)"
+        />
+      </div>
+    </div>
+
+    <!-- Cobros -->
+    <div class="grid-2">
+      <div class="field">
+        <label>Cuota de mantenimiento</label>
+        <input
+          type="number"
+          [(ngModel)]="nuevaUnidad.cuota_mantenimiento"
+          placeholder="Ej. 550"
+        />
+      </div>
+      <div class="field">
+        <label>Moneda</label>
+        <select [(ngModel)]="nuevaUnidad.moneda">
+          <option value="GTQ">GTQ</option>
+          <option value="USD">USD</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Periodicidad</label>
+        <select [(ngModel)]="nuevaUnidad.periodicidad">
+          <option value="" disabled selected>Selecciona</option>
+          <option value="mensual">Mensual</option>
+          <option value="bimestral">Bimestral</option>
+          <option value="trimestral">Trimestral</option>
+          <option value="semestral">Semestral</option>
+          <option value="anual">Anual</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Días de gracia</label>
+        <input
+          type="number"
+          min="0"
+          [(ngModel)]="nuevaUnidad.gracia_dias"
+          placeholder="0"
+        />
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Día de corte (1–31)</label>
+        <input
+          type="number"
+          min="1"
+          max="31"
+          [(ngModel)]="nuevaUnidad.dia_corte"
+        />
+      </div>
+      <div class="field">
+        <label>Día de vencimiento (1–31)</label>
+        <input
+          type="number"
+          min="1"
+          max="31"
+          [(ngModel)]="nuevaUnidad.dia_vencimiento"
+        />
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Recargo (tipo)</label>
+        <select [(ngModel)]="nuevaUnidad.recargo_tipo">
+          <option value="" disabled selected>Selecciona</option>
+          <option value="porcentaje">Porcentaje</option>
+          <option value="monto_fijo">Monto fijo</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Recargo (valor)</label>
+        <input
+          type="number"
+          min="0"
+          [(ngModel)]="nuevaUnidad.recargo_valor"
+          placeholder="0"
+        />
+      </div>
+    </div>
+
+    <!-- Estado -->
+    <div class="field">
+      <label>Estado</label>
+      <label class="switch">
+        <input
+          type="checkbox"
+          [ngModel]="nuevaUnidad.estado === 'activo'"
+          (ngModelChange)="nuevaUnidad.estado = $event ? 'activo' : 'inactivo'"
+        />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="modal__foot">
+    <button class="tp-btn" (click)="showModal = false">Cancelar</button>
+    <button class="tp-btn tp-btn--green" (click)="guardarUnidad()">
+      {{ editando ? "Actualizar" : "Agregar" }}
+    </button>
+  </div>
+</div>

@@ -1,107 +1,163 @@
 <div class="usuarios-container">
-
+  <!-- Encabezado -->
   <div class="usuarios-header">
     <h2>Gestión de Usuarios</h2>
-    <button class="btn-agregar" (click)="'resetForm()'">+ Nuevo Usuario</button>
+    <button
+      class="tp-btn tp-btn--green"
+      (click)="resetForm(); showModal = true"
+    >
+      + Nuevo Usuario
+    </button>
   </div>
 
-  <!-- Formulario -->
-  <form (ngSubmit)="guardarUsuario()" class="form-usuarios">
-    <div class="form-group">
-      <label>Código Departamento</label>
-      <input type="text" [(ngModel)]="nuevoUsuario.codigo_departamento" name="codigo_departamento" required>
-    </div>
-
-    <div class="form-group">
-      <label>Nombre Completo</label>
-      <input type="text" [(ngModel)]="nuevoUsuario.nombre" name="nombre" required>
-    </div>
-
-    <div class="form-group">
-      <label>Correo Electrónico</label>
-      <input type="email" [(ngModel)]="nuevoUsuario.email" name="email">
-    </div>
-
-    <div class="form-group">
-      <label>NIT</label>
-      <input type="text" [(ngModel)]="nuevoUsuario.nit" name="nit">
-    </div>
-
-    <div class="form-group">
-      <label>ID Condominio</label>
-      <input type="text" [(ngModel)]="nuevoUsuario.id_condominio" name="id_condominio" required>
-    </div>
-
-    <div class="form-group">
-      <label>Nombre Condominio</label>
-      <input type="text" [(ngModel)]="nuevoUsuario.nombre_condominio" name="nombre_condominio" required>
-    </div>
-
-    <div class="form-group">
-      <label>Unidad / Apartamento</label>
-      <input type="text" [(ngModel)]="nuevoUsuario.unidad" name="unidad">
-    </div>
-
-    <div class="form-group">
-      <label>Rol</label>
-      <select [(ngModel)]="nuevoUsuario.rol" name="rol" required>
-        <option value="residente">Residente</option>
-        <option value="admin">Administrador</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Estado</label>
-      <select [(ngModel)]="nuevoUsuario.estado" name="estado">
-        <option value="activo">Activo</option>
-        <option value="inactivo">Inactivo</option>
-      </select>
-    </div>
-
-    <div class="form-actions">
-      <button type="submit" class="btn-submit">
-        {{ editando ? 'Actualizar' : 'Agregar' }} Usuario
-      </button>
-    </div>
-  </form>
-
   <!-- Tabla -->
-  <div class="tabla-wrapper">
-    <table class="tabla-usuarios">
+  <div class="table-card">
+    <table class="tp-table">
       <thead>
         <tr>
-          <th>Código</th>
           <th>Nombre</th>
           <th>Email</th>
-          <th>NIT</th>
-          <th>Condominio</th>
-          <th>Unidad</th>
           <th>Rol</th>
+          <th>Residencia</th>
+          <th>Rol Vecino</th>
           <th>Estado</th>
           <th class="acciones-col">Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let usuario of usuarios">
-          <td>{{ usuario.codigo_departamento }}</td>
-          <td>{{ usuario.nombre }}</td>
-          <td>{{ usuario.email }}</td>
-          <td>{{ usuario.nit }}</td>
-          <td>{{ usuario.nombre_condominio }}</td>
-          <td>{{ usuario.unidad }}</td>
-          <td>{{ usuario.rol }}</td>
+        <tr *ngFor="let u of usuarios">
+          <td>{{ u.nombre }}</td>
+          <td>{{ u.email }}</td>
           <td>
-            <span class="estado" [class.activo]="usuario.estado==='activo'" [class.inactivo]="usuario.estado==='inactivo'">
-              {{ usuario.estado }}
-            </span>
+            {{ getNombreRol(u.rolId) }}
+          </td>
+          <td>{{ getNombreResidencia(u.residenciaId) }}</td>
+          <td>{{ u.rol_vecino || "—" }}</td>
+
+          <td>
+            <label class="switch">
+              <input
+                type="checkbox"
+                [checked]="u.estado === 'Activo'"
+                (change)="toggleEstado(u)"
+              />
+              <span class="slider"></span>
+            </label>
           </td>
           <td class="acciones">
-            <button (click)="editarUsuario(usuario)" class="btn-accion editar">Editar</button>
-            <button (click)="eliminarUsuario(usuario.id)" class="btn-accion eliminar">Eliminar</button>
+            <button (click)="editarUsuario(u)" class="icon-btn edit">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button (click)="eliminarUsuario(u.id)" class="icon-btn delete">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>
 
+<!-- Modal -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="showModal = false"></div>
+<div class="modal" *ngIf="showModal">
+  <div class="modal__head">
+    <h3>{{ editando ? "Editar Usuario" : "Nuevo Usuario" }}</h3>
+    <button class="icon-btn" (click)="showModal = false">✕</button>
+  </div>
+  <div class="modal__body">
+    <div class="field">
+      <label>Nombre</label>
+      <input
+        type="text"
+        [(ngModel)]="nuevoUsuario.nombre"
+        placeholder="Ej. Juan Pérez"
+      />
+    </div>
+
+    <div class="field">
+      <label>Email</label>
+      <input
+        type="email"
+        [(ngModel)]="nuevoUsuario.email"
+        placeholder="correo@ejemplo.com"
+      />
+    </div>
+
+    <div class="field">
+      <label>Rol</label>
+      <ng-select
+        [items]="roles"
+        bindLabel="nombre"
+        bindValue="id"
+        [(ngModel)]="nuevoUsuario.rolId"
+        [placeholder]="!nuevoUsuario.rolId ? 'Selecciona rol' : ''"
+        class="custom-select"
+      >
+      </ng-select>
+    </div>
+
+    <!-- Opcional: Usuario y Password -->
+    <div class="field">
+      <label>Usuario (opcional)</label>
+      <input
+        type="text"
+        [(ngModel)]="nuevoUsuario.username"
+        placeholder="Ej. admin01"
+      />
+    </div>
+
+    <div class="field">
+      <label>Contraseña (opcional)</label>
+      <input
+        type="password"
+        [(ngModel)]="nuevoUsuario.password"
+        placeholder="••••••"
+      />
+    </div>
+
+    <!-- Residencia -->
+    <div class="field">
+      <label>Residencia</label>
+      <ng-select
+        [items]="residencias"
+        bindLabel="displayName"
+        bindValue="id"
+        [(ngModel)]="nuevoUsuario.residenciaId"
+        [placeholder]="!nuevoUsuario.residenciaId ? 'Selecciona residencia' : ''"
+        class="custom-select"
+      >
+      </ng-select>
+    </div>
+
+    <!-- Rol Vecino -->
+    <div class="field">
+      <label>Rol en residencia</label>
+      <select [(ngModel)]="nuevoUsuario.rol_vecino">
+        <option value="" disabled selected>Selecciona</option>
+        <option *ngFor="let opt of rolVecinoOpciones" [value]="opt">
+          {{ opt | titlecase }}
+        </option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Estado</label>
+      <label class="switch">
+        <input
+          type="checkbox"
+          [(ngModel)]="nuevoUsuario.estado"
+          [ngModel]="nuevoUsuario.estado === 'Activo'"
+          (ngModelChange)="nuevoUsuario.estado = $event ? 'Activo' : 'Inactivo'"
+        />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+  <div class="modal__foot">
+    <button class="tp-btn" (click)="showModal = false">Cancelar</button>
+    <button class="tp-btn tp-btn--green" (click)="guardarUsuario()">
+      {{ editando ? "Actualizar" : "Agregar" }}
+    </button>
+  </div>
 </div>

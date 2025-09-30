@@ -14,8 +14,9 @@ export class RolesComponent implements OnInit {
   private rolesService = inject(RolesService);
 
   roles: any[] = [];
-  nuevoRol: any = {};
+  nuevoRol: any = { nombre: '', descripcion: '', permisos: [] };
   editando: any = null;
+  showModal = false;
 
   permisosDisponibles = ['Agregar', 'Editar', 'Eliminar', 'Ver'];
 
@@ -23,15 +24,21 @@ export class RolesComponent implements OnInit {
     await this.cargarRoles();
   }
 
+  /** 🔄 Cargar roles desde Firestore */
   async cargarRoles() {
     this.roles = await this.rolesService.obtenerRoles();
   }
 
+  /** ✅ Verificar si un permiso ya está marcado */
+  tienePermiso(permiso: string): boolean {
+    return this.nuevoRol.permisos && this.nuevoRol.permisos.includes(permiso);
+  }
+
+  /** 🔄 Agregar o quitar un permiso del rol actual */
   togglePermiso(permiso: string) {
     if (!this.nuevoRol.permisos) {
       this.nuevoRol.permisos = [];
     }
-
     if (this.nuevoRol.permisos.includes(permiso)) {
       this.nuevoRol.permisos = this.nuevoRol.permisos.filter((p: string) => p !== permiso);
     } else {
@@ -39,10 +46,7 @@ export class RolesComponent implements OnInit {
     }
   }
 
-  tienePermiso(permiso: string) {
-    return this.nuevoRol.permisos && this.nuevoRol.permisos.includes(permiso);
-  }
-
+  /** 💾 Guardar (crear o actualizar) rol */
   async guardarRol() {
     if (!this.nuevoRol.nombre) {
       alert('El nombre del rol es obligatorio');
@@ -60,15 +64,18 @@ export class RolesComponent implements OnInit {
       await this.rolesService.agregarRol(this.nuevoRol);
     }
 
-    this.resetForm();
     await this.cargarRoles();
+    this.resetForm();
+    this.showModal = false;
   }
 
+  /** ✏️ Editar rol existente */
   editarRol(rol: any) {
     this.nuevoRol = { ...rol };
     this.editando = rol;
   }
 
+  /** ❌ Eliminar rol */
   async eliminarRol(id: string) {
     if (confirm('¿Seguro que deseas eliminar este rol?')) {
       await this.rolesService.eliminarRol(id);
@@ -76,6 +83,7 @@ export class RolesComponent implements OnInit {
     }
   }
 
+  /** 🔄 Resetear formulario */
   resetForm() {
     this.nuevoRol = { nombre: '', descripcion: '', permisos: [] };
     this.editando = null;

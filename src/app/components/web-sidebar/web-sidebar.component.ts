@@ -21,6 +21,10 @@ export class WebSidebarComponent {
     { label: 'Reportes', icon: 'bar_chart', route: '/reportes' },
     { label: 'Reservaciones', icon: 'event', route: '/reservaciones' },
     { label: 'Configuración', icon: 'settings', route: '/configuracion' },
+    { label: 'Usuarios', icon: 'people', route: '/usuarios' },
+    { label: 'Roles', icon: 'security', route: '/roles' },
+    { label: 'Unidades', icon: 'home_work', route: '/unidades' },
+    { label: 'Residencias', icon: 'location_city', route: '/residencias' },
     { label: 'Cerrar Sesión', icon: 'logout', route: '/login' },
   ];
 

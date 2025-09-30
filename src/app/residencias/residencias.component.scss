@@ -1,11 +1,24 @@
-.usuarios-container {
+.residencias-container {
   background: #fff;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* ================== TABLA ================== */
+/* ====== Encabezado ====== */
+.residencias-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--green);
+  }
+}
+
+/* ====== Tabla ====== */
 .table-card {
   border-radius: 10px;
   overflow: hidden;
@@ -39,24 +52,7 @@
   }
 }
 
-/* ================== BADGES ================== */
-.badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin: 2px;
-  background: #eef2ff;
-  color: var(--green);
-}
-
-.badge--perm {
-  background: #f3f4f6;
-  color: #555;
-}
-
-/* ================== SWITCH ================== */
+/* ====== Switch Estado ====== */
 .switch {
   position: relative;
   display: inline-block;
@@ -102,34 +98,35 @@
   }
 }
 
-/* ================== ACCIONES ================== */
+/* ====== Acciones ====== */
 .acciones {
   display: flex;
   gap: 8px;
   align-items: center;
 
-  button {
+  .icon-btn {
     display: flex;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 8px;
     border: none;
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-size: 0.85rem;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.2s ease;
 
-    &.editar {
+    &.edit {
       background: #e0f2fe;
       color: #0369a1;
+
       &:hover {
         background: #bae6fd;
       }
     }
 
-    &.eliminar {
+    &.delete {
       background: #fee2e2;
       color: #b91c1c;
+
       &:hover {
         background: #fecaca;
       }
@@ -137,28 +134,26 @@
   }
 }
 
-/* ================== BOTONES ================== */
+/* ====== Botones ====== */
 .tp-btn {
   border: none;
   border-radius: 999px;
   padding: 8px 16px;
   font-weight: 700;
   cursor: pointer;
-  transition: all .2s;
+  transition: all 0.2s;
 
   &--green {
-    background: #0BBF38;
+    background: #0bbf38;
     color: #fff;
-    &:hover { filter: brightness(0.9); }
-  }
 
-  &--danger {
-    background: #e74c3c;
-    color: #fff;
-    &:hover { background: #c0392b; }
+    &:hover {
+      filter: brightness(0.9);
+    }
   }
 }
 
+/* ====== Mini Botón ====== */
 .mini-btn {
   padding: 6px 12px;
   border-radius: 8px;
@@ -166,12 +161,15 @@
   font-size: 0.85rem;
   cursor: pointer;
   border: none;
+  background: #f3f4f6;
+  color: #333;
 
-  &--green { background:#0BBF38; color:#fff; }
-  &--danger { background:#e74c3c; color:#fff; }
+  &:hover {
+    background: #e5e7eb;
+  }
 }
 
-/* ================== MODAL ================== */
+/* ====== Modal ====== */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -190,11 +188,11 @@
   background: #fff;
   border-radius: 12px;
   width: 95%;
-  max-width: 500px;
+  max-width: 600px;
   z-index: 100;
   display: flex;
   flex-direction: column;
-  max-height: 70vh;
+  max-height: 80vh;
   overflow: hidden;
 }
 
@@ -232,36 +230,52 @@
     select,
     textarea {
       width: 100%;
-      padding: 0.7rem 1rem;
+      padding: 0.7rem;
       border-radius: 8px;
       border: 1px solid #ddd;
       font-size: 0.9rem;
-      background: #f9fafb;
-      transition: all 0.2s ease;
-
-      &:focus {
-        border-color: var(--green);
-        background: #fff;
-        outline: none;
-        box-shadow: 0 0 0 2px rgba(11, 191, 56, 0.2);
-      }
     }
+  }
 
-    /* 🎯 Select con flecha custom */
-    select {
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7L10 12L15 7' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      background-size: 16px;
-      padding-right: 2.5rem;
-      cursor: pointer;
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .row-flex {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+
+    input {
+      flex: 1;
+    }
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    .tag {
+      background: #f3f4f6;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+
+      button {
+        margin-left: 6px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-weight: bold;
+      }
     }
   }
 }
-
 
 .modal__foot {
   padding: 16px 20px;
@@ -271,33 +285,6 @@
   gap: 10px;
 }
 
-/* Botón de cerrar modal */
-.modal__head .icon-btn {
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 50%;
-  background: #f3f4f6; /* gris claro */
-  color: #333;
-  font-size: 1rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.modal__head .icon-btn:hover {
-  background: #e5e7eb; /* hover gris más oscuro */
-  color: #111;
-  transform: rotate(90deg); /* animación sutil */
-}
-
-.modal__head .icon-btn:active {
-  background: #d1d5db;
-  transform: scale(0.9);
-}
 
 
 
@@ -361,4 +348,3 @@
 ::ng-deep .custom-select .ng-arrow-wrapper .ng-arrow {
   border-color: var(--green) transparent transparent;
 }
-

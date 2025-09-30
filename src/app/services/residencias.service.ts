@@ -1,46 +1,49 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp, query, where } from '@angular/fire/firestore';
-import { Unidad } from '../../models/unidades.interface';
+import { Firestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, serverTimestamp } from '@angular/fire/firestore';
 
 @Injectable({ providedIn: 'root' })
-export class UnidadesService {
-  private collectionName = 'unidades';
-  private usuariosCollection = 'usuarios';
+export class ResidenciasService {
+  private collectionName = 'residencias';
+  private unidadesCollection = 'unidades';
 
   constructor(private firestore: Firestore) {}
 
-  async agregarUnidad(unidad: Unidad) {
+  // 📌 Crear residencia
+  async agregarResidencia(residencia: any) {
     const colRef = collection(this.firestore, this.collectionName);
     return await addDoc(colRef, {
-      ...unidad,
+      ...residencia,
       fecha_creacion: serverTimestamp(),
       fecha_actualizacion: serverTimestamp()
     });
   }
 
-  async obtenerUnidades() {
+  // 📌 Obtener residencias
+  async obtenerResidencias() {
     const colRef = collection(this.firestore, this.collectionName);
     const snapshot = await getDocs(colRef);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   }
 
-  async actualizarUnidad(id: string, unidad: Partial<Unidad>) {
+  // 📌 Actualizar residencia
+  async actualizarResidencia(id: string, residencia: any) {
     const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
     return await updateDoc(docRef, {
-      ...unidad,
+      ...residencia,
       fecha_actualizacion: serverTimestamp()
     });
   }
 
-  async eliminarUnidad(id: string) {
+  // 📌 Eliminar residencia
+  async eliminarResidencia(id: string) {
     const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
     return await deleteDoc(docRef);
   }
 
-  /** 🔹 Obtener todos los usuarios activos */
-  async obtenerUsuariosActivos() {
-    const colRef = collection(this.firestore, this.usuariosCollection);
-    const q = query(colRef, where('estado', '==', 'Activo'));
+  // 📌 Obtener Unidades activas (para el select)
+  async obtenerUnidadesActivas() {
+    const colRef = collection(this.firestore, this.unidadesCollection);
+    const q = query(colRef, where('estado', '==', 'activo'));
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   }
