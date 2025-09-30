@@ -1,0 +1,120 @@
+<div class="amenidades-container">
+  <!-- Encabezado -->
+  <div class="amenidades-header">
+    <h2>Gestión de Amenidades</h2>
+    <button class="tp-btn tp-btn--green" (click)="resetForm(); showModal = true">+ Nueva Amenidad</button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-card">
+    <table class="tp-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Ubicación</th>
+          <th>Costo</th>
+          <th>Capacidad</th>
+          <th>Reserva</th>
+          <th>Estado</th>
+          <th class="acciones-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of amenidades">
+          <td>{{ a.nombre }}</td>
+          <td>{{ a.ubicacion || '—' }}</td>
+          <td>Q{{ a.costo || 0 }}</td>
+          <td>{{ a.capacidad || '—' }}</td>
+          <td>{{ a.requiere_reserva ? 'Sí' : 'No' }}</td>
+          <td>
+            <label class="switch">
+              <input type="checkbox" [checked]="a.estado === 'activo'" (change)="toggleEstado(a)" />
+              <span class="slider"></span>
+            </label>
+          </td>
+          <td class="acciones">
+            <button (click)="editarAmenidad(a)" class="icon-btn edit">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button (click)="eliminarAmenidad(a.id)" class="icon-btn delete">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="showModal = false"></div>
+<div class="modal" *ngIf="showModal">
+  <div class="modal__head">
+    <h3>{{ editando ? "Editar Amenidad" : "Nueva Amenidad" }}</h3>
+    <button class="icon-btn" (click)="showModal = false">✕</button>
+  </div>
+
+  <div class="modal__body">
+    <div class="field">
+      <label>Nombre</label>
+      <input type="text" [(ngModel)]="nuevaAmenidad.nombre" placeholder="Ej. Salón Social" />
+    </div>
+
+    <div class="field">
+      <label>Descripción</label>
+      <textarea [(ngModel)]="nuevaAmenidad.descripcion"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Ubicación</label>
+      <input type="text" [(ngModel)]="nuevaAmenidad.ubicacion" placeholder="Ej. Torre A, nivel 1" />
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Costo (Q)</label>
+        <input type="number" [(ngModel)]="nuevaAmenidad.costo" />
+      </div>
+      <div class="field">
+        <label>Capacidad</label>
+        <input type="number" [(ngModel)]="nuevaAmenidad.capacidad" />
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Horario inicio</label>
+        <input type="time" [(ngModel)]="nuevaAmenidad.horario_inicio" />
+      </div>
+      <div class="field">
+        <label>Horario fin</label>
+        <input type="time" [(ngModel)]="nuevaAmenidad.horario_fin" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Requiere reserva</label>
+      <input type="checkbox" [(ngModel)]="nuevaAmenidad.requiere_reserva" />
+    </div>
+
+    <div class="field">
+      <label>Restricciones</label>
+      <textarea [(ngModel)]="nuevaAmenidad.restricciones"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Estado</label>
+      <label class="switch">
+        <input type="checkbox" [ngModel]="nuevaAmenidad.estado === 'activo'" (ngModelChange)="nuevaAmenidad.estado = $event ? 'activo' : 'inactivo'" />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="modal__foot">
+    <button class="tp-btn" (click)="showModal = false">Cancelar</button>
+    <button class="tp-btn tp-btn--green" (click)="guardarAmenidad()">
+      {{ editando ? "Actualizar" : "Agregar" }}
+    </button>
+  </div>
+</div>

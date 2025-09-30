@@ -1,0 +1,400 @@
+/* === Amenidades Styles === */
+.amenidades-container {
+  padding: 1.5rem;
+
+  .amenidades-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .tp-btn {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* === Tabla === */
+.tp-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    background: #f9fafb;
+
+    th {
+      text-align: left;
+      font-weight: 600;
+      padding: 0.75rem;
+      border-bottom: 2px solid #e5e7eb;
+      color: #374151;
+      font-size: 0.9rem;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+
+    &:hover {
+      background: #f9f9f9;
+    }
+
+    td {
+      padding: 0.75rem;
+      font-size: 0.9rem;
+      color: #4b5563;
+      vertical-align: middle;
+    }
+
+    .acciones {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+  }
+}
+
+/* === Switch estado === */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #d1d5db;
+    transition: 0.3s;
+    border-radius: 22px;
+
+    &::before {
+      position: absolute;
+      content: '';
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: var(--green);
+
+    &::before {
+      transform: translateX(20px);
+    }
+  }
+}
+
+
+
+/* ====== Acciones ====== */
+.acciones {
+  display: flex;
+  gap: 6px;
+
+  .icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &.edit {
+      background: #e0f2fe;
+      color: #0369a1;
+      &:hover {
+        background: #bae6fd;
+      }
+    }
+
+    &.delete {
+      background: #fee2e2;
+      color: #b91c1c;
+      &:hover {
+        background: #fecaca;
+      }
+    }
+  }
+}
+
+ .icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &.edit {
+      background: #e0f2fe;
+      color: #0369a1;
+      &:hover {
+        background: #bae6fd;
+      }
+    }
+
+    &.delete {
+      background: #fee2e2;
+      color: #b91c1c;
+      &:hover {
+        background: #fecaca;
+      }
+    }
+  }
+
+
+  /* ================== BOTONES ================== */
+.tp-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+
+  &--green {
+    background: #0BBF38;
+    color: #fff;
+    &:hover { filter: brightness(0.9); }
+  }
+
+  &--danger {
+    background: #e74c3c;
+    color: #fff;
+    &:hover { background: #c0392b; }
+  }
+}
+
+.mini-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: none;
+
+  &--green { background:#0BBF38; color:#fff; }
+  &--danger { background:#e74c3c; color:#fff; }
+}
+{}
+
+/* ================== MODAL ================== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 500px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  max-height: 70vh;
+  overflow: hidden;
+}
+
+.modal__head {
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--green);
+  }
+}
+
+.modal__body {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+
+  .field {
+    margin-bottom: 15px;
+
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 0.9rem;
+      background: #f9fafb;
+      transition: all 0.2s ease;
+
+      &:focus {
+        border-color: var(--green);
+        background: #fff;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(11, 191, 56, 0.2);
+      }
+    }
+
+    /* 🎯 Select con flecha custom */
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7L10 12L15 7' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 16px;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+  }
+}
+
+
+.modal__foot {
+  padding: 16px 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Botón de cerrar modal */
+.modal__head .icon-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f4f6; /* gris claro */
+  color: #333;
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.modal__head .icon-btn:hover {
+  background: #e5e7eb; /* hover gris más oscuro */
+  color: #111;
+  transform: rotate(90deg); /* animación sutil */
+}
+
+.modal__head .icon-btn:active {
+  background: #d1d5db;
+  transform: scale(0.9);
+}
+
+
+/* Placeholder */
+::ng-deep .custom-select .ng-placeholder {
+  color: #9ca3af; /* gris bonito */
+  font-style: italic;
+}
+
+/* Dropdown (la lista de opciones) */
+::ng-deep .custom-select .ng-dropdown-panel {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  z-index: 2000; /* evita que quede oculto detrás del modal */
+}
+
+/* Cada opción */
+::ng-deep .custom-select .ng-option {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #333;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* Última opción sin borde */
+::ng-deep .custom-select .ng-option:last-child {
+  border-bottom: none;
+}
+
+/* Hover */
+::ng-deep .custom-select .ng-option:hover {
+  background: rgba(11,191,56,.08);
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* Opción seleccionada */
+::ng-deep .custom-select .ng-option-selected {
+  background: rgba(11,191,56,.15);
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* Flecha derecha (caret) */
+::ng-deep .custom-select .ng-arrow-wrapper .ng-arrow {
+  border-color: var(--green) transparent transparent;
+}
+
+/* Campo seleccionado */
+::ng-deep .custom-select .ng-value {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+/* Texto del seleccionado */
+::ng-deep .custom-select .ng-value-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

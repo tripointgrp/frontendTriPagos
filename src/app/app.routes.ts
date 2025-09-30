@@ -24,6 +24,7 @@ import { RolesComponent } from './roles/roles.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UnidadesComponent } from './unidades/unidades.component';
 import { ResidenciasComponent } from './residencias/residencias.component';
+import { AmenidadesComponent } from './amenidades/amenidades.component';
 
 export const routes: Routes = [
  // Rutas de usuario normal (bloqueadas para admin con el guard)
@@ -34,18 +35,20 @@ export const routes: Routes = [
   { path: 'reserva', component: ReservaComponent },
   { path: 'consulta', component: ConsultaComponent },
   { path: 'notificaciones', component: NotificacionesComponent },
+  // WEB ADMIN
   { path: 'roles', component: RolesComponent },
   { path: 'usuarios', component: UsuariosComponent },
   { path: 'unidades', component: UnidadesComponent },
   { path: 'residencias', component: ResidenciasComponent },
+  { path: 'amenidades', component: AmenidadesComponent },
 
 
 //PANTALLAS ADMIN
   { path: 'ingresos', component: IngresosRegistroComponent},
   { path: 'sidebar', component: WebSidebarComponent},
-  { path: 'residentes', component: AdminResidentesComponent},
-  { path: 'condominios', component: AdminCondominiosComponent},
-  { path: 'reservaciones', component: AdminReservacionesComponent},
+  // { path: 'residentes', component: AdminResidentesComponent},
+  // { path: 'condominios', component: AdminCondominiosComponent},
+  // { path: 'reservaciones', component: AdminReservacionesComponent},
   { path: 'admin-dashboard', component: AdminDashboardComponent},
   { path: 'calendario', component: AdminCalendarioComponent},
   { path: 'admin-pagos', component: AdminPagosComponent},
